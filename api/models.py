@@ -1,9 +1,7 @@
 from django.db import models
-from djangotoolbox.fields import ListField
+from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin, Group
-
-# CREATE MODELS HERE
 
 # User
 class UserProfileManager(BaseUserManager):
@@ -11,7 +9,7 @@ class UserProfileManager(BaseUserManager):
         if not email:
             raise(ValueError("Must provide an email address"))
         email = self.normalize_email(email)
-        user = self.model(name=name, email=email, birthday=birthday, isOperator=isOperator)
+        user = self.model(name=name, email=email, birthday=birthday, is_operator=is_operator)
         user.set_password(password)
         user.save()
         if is_operator:
@@ -24,6 +22,12 @@ class UserProfileManager(BaseUserManager):
         return user
     def create_operator(self, name, email, birthday, password):
         user = self._create_user(name, email, birthday, True, password)
+        user.save()
+        return user
+    def create_superuser(self, name, email, birthday, password):
+        user = self._create_user(name, email, birthday, False, password)
+        user.is_superuser = True
+        user.is_staff = True
         user.save()
         return user
 
@@ -50,8 +54,8 @@ class Twin(models.Model):
     age = models.IntegerField(blank=False, null=True)
     birthday = models.DateField(auto_now=False, auto_now_add=False, blank=False, null=True)
     address = models.CharField(max_length=500, blank=False, null=True)
-    gift_tags = ListField()
-    cake_tags = ListField()
+    gift_tags = ArrayField(models.CharField(max_length=50, blank=False, null=True), default=None)
+    cake_tags = ArrayField(models.CharField(max_length=50, blank=False, null=True), default=None)
 
     def __str__(self):
         return self.name
@@ -69,6 +73,14 @@ class Gift(models.Model):
     name = models.CharField(max_length=200, blank=False, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, blank=False, null=True)
 
+    def __str__(self):
+        return str(self.name) + ": $" + str(self.price)
+
 class Purchase(models.Model):
-    pass
+    gift_id = models.IntegerField(blank=False, null=True)
+    cake_id = models.IntegerField(blank=False, null=True)
+    address = models.CharField(max_length=500, blank=False, null=True)
+
+    def __str__(self):
+        return self.gift_id + self.cake_id + self.address
 
