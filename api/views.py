@@ -25,8 +25,12 @@ def apiOverview(request):
             "Update Twin with Images": "update_twin/<int:pk>/", 
             "Get My Twins": "my_twins/",  
         }, 
-        "Cakes": {}, 
-        "Gifts": {}, 
+        "Cakes": {
+            "Search Cakes by Tags": "cakes/?tags=tag1,tag2,tag3,etc/",
+        }, 
+        "Gifts": {
+            "Search Gifts by Tags": "gifts/?tags=tag1,tag2,tag3,etc/",
+        }, 
         "Purchases": {},
     })
 
@@ -43,6 +47,7 @@ def addTwin(request):
     serializer = CreateTwinSerializer(data=twin)
 
     if serializer.is_valid(raise_exception=True):
+        serializer.save()
         return Response(serializer.data)
     else:
         return Response(data={
@@ -53,6 +58,43 @@ def addTwin(request):
 def getMyTwins(request):
     twins = Twin.objects.filter(owner=request.user)
     serializer = GetTwinsSerializer(twins, many=True)
+
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def getCakesByTagSearch(request):
+    tagParams = request.query_params.get("tags", None)
+    tags = []
+    allCakes = []
+
+    if tagParams is not None:
+        for tag in tagParams.split(","):
+            tags.append(str(tag))
+
+    for tag in tags:
+        cakes = Cake.objects.filter(tag=tag)
+        allCakes += cakes
+
+    serializer = GetCakesSerializer(allCakes, many=True) 
+
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def getGiftsByTagSearch(request):
+    tagParams = request.query_params.get("tags", None)
+    tags = []
+    allGifts = []
+
+    if tagParams is not None:
+        for tag in tagParams.split(","):
+            tags.append(str(tag))
+
+    for tag in tags:
+        gifts = Gift.objects.filter(tag=tag)
+        allGifts += gifts
+
+    serializer = GetGiftsSerializer(allGifts, many=True)
 
     return Response(serializer.data)
 

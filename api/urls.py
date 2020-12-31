@@ -11,8 +11,8 @@ urlpatterns = [
     path('add_twin/', views.addTwin, name="Add New Twin"), 
     path('my_twins/', views.getMyTwins, name="Get My Twins"), 
     # Cakes
-
+    path('cakes/', views.getCakesByTagSearch, name="Search Cakes by Tags"),
     # Gifts
-
+    path('gifts/', views.getGiftsByTagSearch, name="Search Gifts by Tags"),
     # Purchases
 ]

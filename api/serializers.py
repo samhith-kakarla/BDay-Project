@@ -20,3 +20,13 @@ class GetTwinsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Twin
         fields = ('id', 'name', 'age', 'birthday', 'address', 'gift_tags', 'cake_tags')
+
+class GetCakesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cake
+        fields = ('id', 'name', 'price', 'tag')
+
+class GetGiftsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Gift
+        fields = ('id', 'name', 'price', 'tag')
