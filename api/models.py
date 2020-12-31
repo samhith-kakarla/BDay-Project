@@ -5,44 +5,33 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, Permis
 
 # User
 class UserProfileManager(BaseUserManager):
-    def _create_user(self, name, email, birthday, is_operator, password=None):
+    def create_user(self, name, email, password=None):
         if not email:
-            raise(ValueError("Must provide an email address"))
+            raise ValueError("Must provide an email address")
         email = self.normalize_email(email)
-        user = self.model(name=name, email=email, birthday=birthday, is_operator=is_operator)
+        user = self.model(name=name, email=email)
         user.set_password(password)
         user.save()
-        if is_operator:
-            operator = Group.objects.get(name="Operator")
-            operator.user_set.add(user)
+        operator = Group.objects.get(name="Operator")
+        operator.user_set.add(user)
         return user
-    def create_user(self, name, email, birthday, password):
-        user = self._create_user(name, email, birthday, False, password)
-        user.save()
-        return user
-    def create_operator(self, name, email, birthday, password):
-        user = self._create_user(name, email, birthday, True, password)
-        user.save()
-        return user
-    def create_superuser(self, name, email, birthday, password):
-        user = self._create_user(name, email, birthday, False, password)
+    def create_superuser(self, name, email, password):
+        user = self.create_user(name, email, password)
         user.is_superuser = True
         user.is_staff = True
         user.save()
         return user
 
 class UserProfile(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(unique=True)
+    email = models.EmailField(unique=True, max_length=255)
     name = models.CharField(max_length=500)
-    birthday = models.DateField(auto_now=False, auto_now_add=False)
-    is_operator = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
     objects = UserProfileManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['name', 'birthday']
+    REQUIRED_FIELDS = ['name']
 
     def __str__(self):
         return self.email
@@ -50,6 +39,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 # Data 
 
 class Twin(models.Model):
+    owner = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, default=1)
     name = models.CharField(max_length=200, blank=False, null=True)
     age = models.IntegerField(blank=False, null=True)
     birthday = models.DateField(auto_now=False, auto_now_add=False, blank=False, null=True)

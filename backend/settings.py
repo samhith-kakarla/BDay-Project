@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'api', 
     'rest_framework', 
-    'corsheaders', 
+    'corsheaders',
+    'djoser',  
 ]
 
 MIDDLEWARE = [
@@ -120,7 +121,26 @@ AUTH_PASSWORD_VALIDATORS = [
 # REST FRAMEWORK
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.AllowAny'], 
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny'
+    ], 
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('JWT',), 
+}
+
+DJOSER = {
+    'LOGIN_FIELD': 'email', 
+    'USER_CREATE_PASSWORD_RETYPE': True, 
+    'ACTIVATION_URL': 'activate/{uid}/{token}',
+    'SERIALIZERS': {
+        'user_create': 'api.serializers.UserCreateSerializer', 
+        'user': 'api.serializers.UserCreateSerializer', 
+    }
 }
 
 # Internationalization

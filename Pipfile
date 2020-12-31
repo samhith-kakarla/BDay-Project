@@ -12,6 +12,8 @@ django-cors-headers = "*"
 djongo = "*"
 djangotoolbox = "*"
 django-environ = "*"
+djoser = "*"
+djangorestframework-simplejwt = "*"
 
 [requires]
 python_version = "3.8"
