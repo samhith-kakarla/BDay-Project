@@ -15,4 +15,6 @@ urlpatterns = [
     # Gifts
     path('gifts/', views.getGiftsByTagSearch, name="Search Gifts by Tags"),
     # Purchases
+    path('send_order/', views.sendOrder, name="Send Purchase Order to DB"), 
+    path('make_payment/', views.makeStripePayment, name="Make Payment to Stripe Account"), 
 ]

@@ -46,6 +46,7 @@ class Twin(models.Model):
     address = models.CharField(max_length=500, blank=False, null=True)
     gift_tags = ArrayField(models.CharField(max_length=50, blank=False, null=True), default=None)
     cake_tags = ArrayField(models.CharField(max_length=50, blank=False, null=True), default=None)
+    match = ArrayField(models.EmailField(unique=True, max_length=255, blank=False, null=True), default=None)
 
     def __str__(self):
         return self.name

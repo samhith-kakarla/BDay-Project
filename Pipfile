@@ -14,6 +14,7 @@ djangotoolbox = "*"
 django-environ = "*"
 djoser = "*"
 djangorestframework-simplejwt = "*"
+stripe = "*"
 
 [requires]
 python_version = "3.8"

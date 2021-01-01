@@ -6,7 +6,15 @@ from rest_framework.response import Response
 from .models import *
 from .serializers import *
 
-# CREATE VIEWS HERE
+import stripe
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
+
+stripe.api_key = env("STRIPE_API_KEY")
+
+# OVERVIEW
 
 @api_view(['GET'])
 def apiOverview(request):
@@ -21,6 +29,7 @@ def apiOverview(request):
         },
         "Twins": {
             "Get Matched Twins": "get_twins/<str:birthday>/", 
+            "Set Twin Match": "set_twin_match/<int:pk>/", 
             "Add New Twin": "add_twin/", 
             "Update Twin with Images": "update_twin/<int:pk>/", 
             "Get My Twins": "my_twins/",  
@@ -31,8 +40,14 @@ def apiOverview(request):
         "Gifts": {
             "Search Gifts by Tags": "gifts/?tags=tag1,tag2,tag3,etc/",
         }, 
-        "Purchases": {},
+        "Purchases": {
+            "Send Purchase Order to DB": "send_order/",
+            "Make Payment to Stripe": "make_payment/"
+        },
     })
+
+
+# TWINS API
 
 @api_view(['GET'])
 def getMatchedTwins(request, birthday):
@@ -61,6 +76,13 @@ def getMyTwins(request):
 
     return Response(serializer.data)
 
+@api_view(['POST'])
+def setTwinMatch(request, pk):
+    pass
+
+
+# CAKES API
+
 @api_view(['GET'])
 def getCakesByTagSearch(request):
     tagParams = request.query_params.get("tags", None)
@@ -80,6 +102,8 @@ def getCakesByTagSearch(request):
     return Response(serializer.data)
 
 
+# GIFTS API
+
 @api_view(['GET'])
 def getGiftsByTagSearch(request):
     tagParams = request.query_params.get("tags", None)
@@ -97,6 +121,34 @@ def getGiftsByTagSearch(request):
     serializer = GetGiftsSerializer(allGifts, many=True)
 
     return Response(serializer.data)
+
+
+# PURCHASE API
+
+@api_view(['POST'])
+def sendOrder(request):
+    purchase = request.data
+    serializer = PurchaseSerializer(data=purchase)
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    else:
+        return Response(data={
+            "failure": "purchase not sent"
+        })
+
+@api_view(['POST'])
+def makeStripePayment(request):
+    payment_intent = stripe.PaymentIntent.create(
+        amount=request.data["amount"],
+        currency="usd", 
+        payment_method_types=["card"], 
+        receipt_email=request.data["email"],
+    )
+
+    return Response(data=payment_intent, status=status.HTTP_200_OK)
+
 
 
 

@@ -30,3 +30,8 @@ class GetGiftsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Gift
         fields = ('id', 'name', 'price', 'tag')
+
+class PurchaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Purchase
+        fields = ('id', 'gift_id', 'cake_id', 'address')
