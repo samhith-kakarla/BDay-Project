@@ -3,6 +3,13 @@ from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin, Group
 
+# FUNCTIONS
+
+def upload_path(instance, filename):
+    return '/'.join(['twin_images', filename])
+
+# MODELS 
+
 # User
 class UserProfileManager(BaseUserManager):
     def create_user(self, name, email, password=None):
@@ -46,10 +53,17 @@ class Twin(models.Model):
     address = models.CharField(max_length=500, blank=False, null=True)
     gift_tags = ArrayField(models.CharField(max_length=50, blank=False, null=True), default=None)
     cake_tags = ArrayField(models.CharField(max_length=50, blank=False, null=True), default=None)
-    match = ArrayField(models.EmailField(unique=True, max_length=255, blank=False, null=True), default=None)
+    match = ArrayField(models.EmailField(unique=True, max_length=255, blank=False, null=True), default=list)
 
     def __str__(self):
         return self.name
+
+class Image(models.Model):
+    image = models.ImageField(blank=False, null=True, upload_to=upload_path)
+    twin = models.ForeignKey(Twin, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.twin) + " " + "Image"
 
 class Cake(models.Model):
     tag = models.CharField(max_length=200, blank=False, null=True)

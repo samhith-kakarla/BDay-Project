@@ -11,15 +11,40 @@ class UserSerializer(UserCreateSerializer):
 
 # REST Serializers
 
-class CreateTwinSerializer(serializers.ModelSerializer):
+class TwinSerializer(serializers.ModelSerializer):
     class Meta:
         model = Twin
         fields = ('id', 'name', 'age', 'birthday', 'address', 'gift_tags', 'cake_tags')
 
+class CreateTwinSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Twin
+        fields = ('id', 'name', 'age', 'birthday', 'address', 'gift_tags', 'cake_tags', 'match')
+
 class GetTwinsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Twin
-        fields = ('id', 'name', 'age', 'birthday', 'address', 'gift_tags', 'cake_tags')
+        fields = ('id', 'name', 'age', 'birthday', 'address', 'gift_tags', 'cake_tags', 'match')
+
+class SetTwinMatchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Twin
+        fields = ('id', 'match')
+
+class AddImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Image
+        fields = ('id', 'image', 'twin')
+
+class GetTwinImagesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Image
+        fields = ('id', 'image', 'twin')
+
+class AddTwinImagesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Twin
+        fields = ('id', 'images')
 
 class GetCakesSerializer(serializers.ModelSerializer):
     class Meta:

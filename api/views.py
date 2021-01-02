@@ -31,7 +31,10 @@ def apiOverview(request):
             "Get Matched Twins": "get_twins/<str:birthday>/", 
             "Set Twin Match": "set_twin_match/<int:pk>/", 
             "Add New Twin": "add_twin/", 
-            "Update Twin with Images": "update_twin/<int:pk>/", 
+            "Update Twin Info": "update_twin/<int:pk>/", 
+            "Delete Twin": "delete_twin/<int:pk>/", 
+            "Update Twin with Images": "update_twin_images/<int:pk>/", 
+            "Get Twin Images": "get_twin_images/<int:pk>/", 
             "Get My Twins": "my_twins/",  
         }, 
         "Cakes": {
@@ -77,9 +80,79 @@ def getMyTwins(request):
     return Response(serializer.data)
 
 @api_view(['POST'])
-def setTwinMatch(request, pk):
-    pass
+def updateTwin(request, pk):
+    twin = Twin.objects.get(id=pk)
+    serializer = TwinSerializer(instance=twin, data=request.data)
 
+    if serializer.is_valid(raise_exception=True):
+        serializer.save()
+        return Response(serializer.data)
+    else:
+        return Response(data={
+            "failure": "Twin not updated"
+        })
+
+@api_view(['DELETE'])
+def deleteTwin(request, pk):
+    try:
+        twin = Twin.objects.get(id=pk)
+        twin.delete()
+        return Response("Twin Deleted!")
+    except:
+        return Response("Delete unsucessful")
+
+@api_view(['POST'])
+def setTwinMatch(request, pk):
+    twin = Twin.objects.get(id=pk)
+    serializer = SetTwinMatchSerializer(instance=twin, data=request.data)
+
+    if serializer.is_valid(raise_exception=True):
+        serializer.save()
+        return Response(serializer.data)
+    else:
+        return Response(data={
+            "failure": "match not set"
+        })
+
+def modify_image(twin_id, image):
+    image_dict = {}
+    image_dict['twin_id'] = twin_id
+    image_dict['image'] = image
+    return image_dict
+
+@api_view(['POST'])
+def addImagesToTwin(request, pk):
+    twin = Twin.objects.get(id=pk)
+    twin_id = twin.id
+    
+    images = dict((request.data).lists())['image']
+    image_data = []
+    error = 1
+
+    for image in images:
+        new_image = modify_image(twin_id, image)
+        serializer = AddImageSerializer(data=new_image)
+        
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            image_data.append(serializer.data)
+        else:
+            error = 0
+    
+    if error == 1:
+        return Response(image_data)
+    else:
+        return Response(data={
+            "failure": "image not added"
+        })
+
+@api_view(['GET'])
+def getTwinImages(request, twin):
+    images = Image.objects.filter(twin=twin)
+    serializer = GetTwinImagesSerializer(images, many=True)
+
+    return Response(serializer.data)
+    
 
 # CAKES API
 
