@@ -42,7 +42,9 @@ def apiOverview(request):
         }, 
         "Purchases": {
             "Send Purchase Order to DB": "send_order/",
-            "Make Payment to Stripe": "make_payment/"
+            "Make Payment to Stripe": "make_payment/", 
+            "Get All Orders": "get_orders/", 
+            "Fulfill Order": "fulfill_order/<int:pk>/", 
         },
     })
 
@@ -203,6 +205,26 @@ def makeStripePayment(request):
     )
 
     return Response(data=payment_intent, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def getOrders(request):
+    purchases = Purchase.objects.all()
+    serializer = GetPurchaseSerializer(purchases, many=True)
+
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def fulfillOrder(request, pk):
+    purchase = Purchase.objects.get(id=pk)
+    serializer = fulfillPurchaseSerializer(instance=purchase, data=request.data)
+
+    if serializer.is_valid(raise_exception=True):
+        serializer.save()
+        return Response(serializer.data)
+    else:
+        return Response(data={
+            "failure": "purchase not fulfilled"
+        })
 
 
 

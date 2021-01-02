@@ -5,8 +5,11 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, Permis
 
 # FUNCTIONS
 
-def upload_path(instance, filename):
+def twin_images_upload_path(instance, filename):
     return '/'.join(['twin_images', filename])
+
+def cake_images_upload_path(instance, filename):
+    return '/'.join(['cake_images', filename])
 
 # MODELS 
 
@@ -59,7 +62,7 @@ class Twin(models.Model):
         return self.name
 
 class Image(models.Model):
-    image = models.ImageField(blank=False, null=True, upload_to=upload_path)
+    image = models.ImageField(blank=False, null=True, upload_to=twin_images_upload_path)
     twin = models.ForeignKey(Twin, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -69,15 +72,16 @@ class Cake(models.Model):
     tag = models.CharField(max_length=200, blank=False, null=True)
     name = models.CharField(max_length=200, blank=False, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, blank=False, null=True)
+    image = models.ImageField(blank=False, null=True, upload_to=cake_images_upload_path)
 
     def __str__(self):
         return str(self.name) + ": $" + str(self.price)
 
 class Purchase(models.Model):
-    gift_id = models.IntegerField(blank=False, null=True)
     cake_id = models.IntegerField(blank=False, null=True)
     address = models.CharField(max_length=500, blank=False, null=True)
+    complete = models.BooleanField(blank=False, null=True, default=False)
 
     def __str__(self):
-        return self.gift_id + self.cake_id + self.address
+        return self.cake_id + " " + self.address + " " + self.complete
 

@@ -20,4 +20,6 @@ urlpatterns = [
     # Purchases
     path('send_order/', views.sendOrder, name="Send Purchase Order to DB"), 
     path('make_payment/', views.makeStripePayment, name="Make Payment to Stripe Account"), 
+    path('get_orders/', views.getOrders, name="Get all Orders"), 
+    path('fulfill_order/<int:pk>/', views.fulfillOrder, name="Fulfill Order"),
 ]

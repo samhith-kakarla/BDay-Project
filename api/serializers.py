@@ -54,4 +54,14 @@ class GetCakesSerializer(serializers.ModelSerializer):
 class PurchaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Purchase
-        fields = ('id', 'gift_id', 'cake_id', 'address')
+        fields = ('id', 'cake_id', 'address')
+
+class GetPurchaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Purchase
+        fields = ('id', 'cake_id', 'address', 'complete')
+
+class fulfillPurchaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Purchase
+        fields = ('id', 'complete')
