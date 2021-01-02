@@ -5,6 +5,5 @@ from .models import *
 admin.site.register(UserProfile)
 admin.site.register(Twin)
 admin.site.register(Cake)
-admin.site.register(Gift)
 admin.site.register(Purchase)
 admin.site.register(Image)

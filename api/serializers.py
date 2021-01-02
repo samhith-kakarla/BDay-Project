@@ -51,11 +51,6 @@ class GetCakesSerializer(serializers.ModelSerializer):
         model = Cake
         fields = ('id', 'name', 'price', 'tag')
 
-class GetGiftsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Gift
-        fields = ('id', 'name', 'price', 'tag')
-
 class PurchaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Purchase

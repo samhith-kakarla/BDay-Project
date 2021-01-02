@@ -17,8 +17,6 @@ urlpatterns = [
     path('set_twin_match/<int:pk>/', views.setTwinMatch, name="Set Twin Match"), 
     # Cakes
     path('cakes/', views.getCakesByTagSearch, name="Search Cakes by Tags"),
-    # Gifts
-    path('gifts/', views.getGiftsByTagSearch, name="Search Gifts by Tags"),
     # Purchases
     path('send_order/', views.sendOrder, name="Send Purchase Order to DB"), 
     path('make_payment/', views.makeStripePayment, name="Make Payment to Stripe Account"), 

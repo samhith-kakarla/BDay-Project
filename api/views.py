@@ -40,9 +40,6 @@ def apiOverview(request):
         "Cakes": {
             "Search Cakes by Tags": "cakes/?tags=tag1,tag2,tag3,etc/",
         }, 
-        "Gifts": {
-            "Search Gifts by Tags": "gifts/?tags=tag1,tag2,tag3,etc/",
-        }, 
         "Purchases": {
             "Send Purchase Order to DB": "send_order/",
             "Make Payment to Stripe": "make_payment/"
@@ -175,27 +172,6 @@ def getCakesByTagSearch(request):
     return Response(serializer.data)
 
 
-# GIFTS API
-
-@api_view(['GET'])
-def getGiftsByTagSearch(request):
-    tagParams = request.query_params.get("tags", None)
-    tags = []
-    allGifts = []
-
-    if tagParams is not None:
-        for tag in tagParams.split(","):
-            tags.append(str(tag))
-
-    for tag in tags:
-        gifts = Gift.objects.filter(tag=tag)
-        allGifts += gifts
-
-    serializer = GetGiftsSerializer(allGifts, many=True)
-
-    return Response(serializer.data)
-
-
 # PURCHASE API
 
 @api_view(['POST'])
@@ -218,6 +194,12 @@ def makeStripePayment(request):
         currency="usd", 
         payment_method_types=["card"], 
         receipt_email=request.data["email"],
+    )
+
+    transfer = stripe.Transfer.create(
+        amount=request.data["cake_amount"], 
+        currency="usd", 
+        destination="cake account name here"
     )
 
     return Response(data=payment_intent, status=status.HTTP_200_OK)
