@@ -15,6 +15,7 @@ django-environ = "*"
 djoser = "*"
 djangorestframework-simplejwt = "*"
 stripe = "*"
+celery = "*"
 
 [requires]
 python_version = "3.8"
