@@ -1,7 +1,4 @@
 from django.shortcuts import render
-from django.core.mail import EmailMessage
-from django.conf import settings
-
 from rest_framework import generics, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response

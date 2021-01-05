@@ -16,6 +16,8 @@ djoser = "*"
 djangorestframework-simplejwt = "*"
 stripe = "*"
 celery = "*"
+redis = "*"
+psycopg2 = "*"
 
 [requires]
 python_version = "3.8"
