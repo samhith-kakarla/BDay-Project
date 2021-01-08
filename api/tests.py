@@ -18,8 +18,6 @@ class TestUrls(SimpleTestCase):
         url = reverse('Bday Project API Overview')
         self.assertEquals(resolve(url).func, views.apiOverview)
     
-    # Auth URL Tests
-
     # Twin URL Tests
 
     def test_get_twins_url(self):
