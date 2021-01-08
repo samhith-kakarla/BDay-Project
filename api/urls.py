@@ -4,8 +4,8 @@ from . import views
 urlpatterns = [
     path('', views.apiOverview, name="Bday Project API Overview"), 
     # User Authentication
-    path('auth/', include('djoser.urls')), 
-    path('auth/', include('djoser.urls.jwt')),
+    path('auth/', include('djoser.urls'), name="User Auth"), 
+    path('auth/', include('djoser.urls.jwt'), name="User Auth JWT"),
     # Twins
     path('get_twins/<str:birthday>/', views.getMatchedTwins, name="Get Matched Twins"), 
     path('add_twin/', views.addTwin, name="Add New Twin"), 
@@ -20,6 +20,6 @@ urlpatterns = [
     # Purchases
     path('send_order/', views.sendOrder, name="Send Purchase Order to DB"), 
     path('make_payment/', views.makeStripePayment, name="Make Payment to Stripe Account"), 
-    path('get_orders/', views.getOrders, name="Get all Orders"), 
+    path('get_orders/', views.getOrders, name="Get All Orders"), 
     path('fulfill_order/<int:pk>/', views.fulfillOrder, name="Fulfill Order"),
 ]
