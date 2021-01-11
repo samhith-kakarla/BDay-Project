@@ -3,7 +3,7 @@ from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin, Group
 
-# FUNCTIONS
+# HELPER FUNCTIONS
 
 def twin_images_upload_path(instance, filename):
     return '/'.join(['twin_images', filename])
@@ -54,8 +54,8 @@ class Twin(models.Model):
     age = models.IntegerField(blank=False, null=True)
     birthday = models.DateField(auto_now=False, auto_now_add=False, blank=False, null=True)
     address = models.CharField(max_length=500, blank=False, null=True)
-    gift_tags = ArrayField(models.CharField(max_length=50, blank=False, null=True), default=None)
-    cake_tags = ArrayField(models.CharField(max_length=50, blank=False, null=True), default=None)
+    gift_tags = ArrayField(models.CharField(max_length=50, blank=False, null=True), default=list)
+    cake_tags = ArrayField(models.CharField(max_length=50, blank=False, null=True), default=list)
     match = ArrayField(models.EmailField(unique=True, max_length=255, blank=False, null=True), default=list)
 
     def __str__(self):

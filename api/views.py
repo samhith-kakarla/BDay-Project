@@ -48,6 +48,13 @@ def apiOverview(request):
         },
     })
 
+# HELPER FUNCTIONS
+
+def modify_image(twin_id, image):
+    image_dict = {}
+    image_dict['twin_id'] = twin_id
+    image_dict['image'] = image
+    return image_dict
 
 # TWINS API
 
@@ -81,24 +88,36 @@ def getMyTwins(request):
 @api_view(['POST'])
 def updateTwin(request, pk):
     twin = Twin.objects.get(id=pk)
-    serializer = TwinSerializer(instance=twin, data=request.data)
 
-    if serializer.is_valid(raise_exception=True):
-        serializer.save()
-        return Response(serializer.data)
-    else:
+    if twin.owner != request.user:
         return Response(data={
-            "failure": "Twin not updated"
+            "failure": "You do not own this data"
         })
+    else: 
+        serializer = TwinSerializer(instance=twin, data=request.data)
+
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(data={
+                "failure": "Twin not updated"
+            })
 
 @api_view(['DELETE'])
 def deleteTwin(request, pk):
-    try:
-        twin = Twin.objects.get(id=pk)
-        twin.delete()
-        return Response("Twin Deleted!")
-    except:
-        return Response("Delete unsucessful")
+    twin = Twin.objects.get(id=pk)
+    
+    if twin.owner != request.user:
+        return Response(data={
+            "failure": "You do not own this data"
+        })
+    else:
+        try:
+            twin.delete()
+            return Response("Twin Deleted!")
+        except:
+            return Response("Delete unsucessful")
 
 @api_view(['POST'])
 def setTwinMatch(request, pk):
@@ -113,37 +132,36 @@ def setTwinMatch(request, pk):
             "failure": "match not set"
         })
 
-def modify_image(twin_id, image):
-    image_dict = {}
-    image_dict['twin_id'] = twin_id
-    image_dict['image'] = image
-    return image_dict
-
 @api_view(['POST'])
 def addImagesToTwin(request, pk):
     twin = Twin.objects.get(id=pk)
     twin_id = twin.id
-    
-    images = dict((request.data).lists())['image']
-    image_data = []
-    error = 1
 
-    for image in images:
-        new_image = modify_image(twin_id, image)
-        serializer = AddImageSerializer(data=new_image)
-        
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            image_data.append(serializer.data)
-        else:
-            error = 0
-    
-    if error == 1:
-        return Response(image_data)
-    else:
+    if twin.owner != request.user:
         return Response(data={
-            "failure": "image not added"
+            "failure": "You do not own this data"
         })
+    else:
+        images = dict((request.data).lists())['image']
+        image_data = []
+        error = 1
+
+        for image in images:
+            new_image = modify_image(twin_id, image)
+            serializer = AddImageSerializer(data=new_image)
+            
+            if serializer.is_valid(raise_exception=True):
+                serializer.save()
+                image_data.append(serializer.data)
+            else:
+                error = 0
+        
+        if error == 1:
+            return Response(image_data)
+        else:
+            return Response(data={
+                "failure": "image not added"
+            })
 
 @api_view(['GET'])
 def getTwinImages(request, twin):

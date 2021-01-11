@@ -11,6 +11,8 @@ class UserSerializer(UserCreateSerializer):
 
 # REST Serializers
 
+# Twins
+
 class TwinSerializer(serializers.ModelSerializer):
     class Meta:
         model = Twin
@@ -46,10 +48,14 @@ class AddTwinImagesSerializer(serializers.ModelSerializer):
         model = Twin
         fields = ('id', 'images')
 
+# Cakes
+
 class GetCakesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cake
         fields = ('id', 'name', 'price', 'tag')
+
+# Purchases
 
 class PurchaseSerializer(serializers.ModelSerializer):
     class Meta:

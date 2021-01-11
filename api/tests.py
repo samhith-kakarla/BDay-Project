@@ -1,8 +1,64 @@
-from django.test import TestCase, SimpleTestCase
+from django.test import TestCase, SimpleTestCase, Client
 from django.urls import reverse, resolve
+from django.contrib.auth import get_user_model
+
 from . import views
+from .models import * 
+from .serializers import *
+
+client = Client()
 
 # VIEW TESTING
+class TestTwinViews(TestCase):
+    
+    def setUp(self):
+        User = get_user_model()
+        self.user = User.objects.create(
+            name="Micheal", email="micheal@gmail.com", password="1234"
+        )
+     
+    def test_getMatchedTwins(self):
+        Twin.objects.create(
+            name="Twin1", owner=self.user, age=15, birthday="2003-12-22", address="address 1"
+        )
+
+        response = client.get(reverse('Get Matched Twins', args=['2003-12-22']))
+        twins = Twin.objects.filter(birthday="2003-12-22")
+        serializer = GetTwinsSerializer(twins, many=True)
+        
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.data, serializer.data)
+
+    def test_addTwin(self):
+        twin = {
+            "name": "Twin 3", 
+            "age": 15, 
+            "birthday": "2003-11-10", 
+            "address": "Address 2"
+        }
+
+        response = client.post(reverse('Add New Twin'), data=twin, content_type="application/json")
+
+        self.assertEquals(response.status_code, 200)
+
+    def test_getMyTwins(self):
+        Twin.objects.create(
+            name="Twin1", owner=self.user, age=15, birthday="2003-12-22", address="address 1"
+        )
+
+        response = client.get(reverse('Get My Twins'))
+        twins = Twin.objects.filter(owner=self.user)
+        serializer = GetTwinsSerializer(twins, many=True)
+
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.data, serializer.data)
+
+    def test_updateTwin(self):
+        Twin.objects.create(
+            name="Twin1", owner=self.user, age=15, birthday="2003-12-22", address="address 1"
+        )
+
+        
 
 
 # FUNCTION TESTING
@@ -14,6 +70,7 @@ from . import views
 # URL TESTING
 
 class TestUrls(SimpleTestCase):
+    
     def test_api_overview_url(self):
         url = reverse('Bday Project API Overview')
         self.assertEquals(resolve(url).func, views.apiOverview)
