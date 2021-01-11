@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "5b6e60f3090fd50523ca9ae7ebdd62696d78592a14ed32eda526e403f8e3f966"
+            "sha256": "b9d2eac3d310989787819e469d8879f47eb970ce2e8ac0ea4642e0eb122f3c83"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -181,6 +181,14 @@
             "index": "pypi",
             "version": "==3.0.5"
         },
+        "django-celery-beat": {
+            "hashes": [
+                "sha256:4eb0e8412e2e05ba0029912a6f80d1054731001eecbcb4d59688c4e07cf4d9d3",
+                "sha256:8a169e11d96faed8b72d505ddbc70e7fe0b16cdc854df43cb209c153ed08d651"
+            ],
+            "index": "pypi",
+            "version": "==2.1.0"
+        },
         "django-cors-headers": {
             "hashes": [
                 "sha256:5665fc1b1aabf1b678885cf6f8f8bd7da36ef0a978375e767d491b48d3055d8f",
@@ -204,9 +212,18 @@
             ],
             "version": "==1.1.1"
         },
+        "django-timezone-field": {
+            "hashes": [
+                "sha256:068dc2c9b11c2230e126f511a515609d46f8cc49278b293e7536be07997fe892",
+                "sha256:b5b587aabed8db66eb3453691522164915c1aa1b326d8ddeadc8832a8580faeb"
+            ],
+            "markers": "python_version >= '3.5'",
+            "version": "==4.1.1"
+        },
         "djangorestframework": {
             "hashes": [
-                "sha256:0209bafcb7b5010fdfec784034f059d512256424de2a0f084cb82b096d6dd6a7"
+                "sha256:0209bafcb7b5010fdfec784034f059d512256424de2a0f084cb82b096d6dd6a7",
+                "sha256:0898182b4737a7b584a2c73735d89816343369f259fea932d90dc78e35d8ac33"
             ],
             "index": "pypi",
             "version": "==3.12.2"
@@ -321,11 +338,11 @@
         },
         "prompt-toolkit": {
             "hashes": [
-                "sha256:25c95d2ac813909f813c93fde734b6e44406d1477a9faef7c915ff37d39c0a8c",
-                "sha256:7debb9a521e0b1ee7d2fe96ee4bd60ef03c6492784de0547337ca4433e46aa63"
+                "sha256:ac329c69bd8564cb491940511957312c7b8959bb5b3cf3582b406068a51d5bb7",
+                "sha256:b8b3d0bde65da350290c46a8f54f336b3cbf5464a4ac11239668d986852e79d5"
             ],
             "markers": "python_full_version >= '3.6.1'",
-            "version": "==3.0.8"
+            "version": "==3.0.10"
         },
         "psycopg2": {
             "hashes": [
@@ -358,11 +375,11 @@
         },
         "pyjwt": {
             "hashes": [
-                "sha256:5c2ff2eb27d7e342dfc3cafcc16412781f06db2690fbef81922b0172598f085b",
-                "sha256:7a2b271c6dac2fda9e0c33d176c4253faba2c6c6b3a99c7f28a32c3c97522779"
+                "sha256:5c6eca3c2940464d106b99ba83b00c6add741c9becaec087fb7ccdefea71350e",
+                "sha256:8d59a976fb773f3e6a39c85636357c4f0e242707394cadadd9814f5cbaa20e96"
             ],
             "markers": "python_version >= '3.6'",
-            "version": "==2.0.0"
+            "version": "==1.7.1"
         },
         "pymongo": {
             "hashes": [
@@ -433,6 +450,20 @@
             ],
             "version": "==3.11.2"
         },
+        "python-crontab": {
+            "hashes": [
+                "sha256:4bbe7e720753a132ca4ca9d4094915f40e9d9dc8a807a4564007651018ce8c31"
+            ],
+            "version": "==2.5.1"
+        },
+        "python-dateutil": {
+            "hashes": [
+                "sha256:73ebfe9dbf22e832286dafa60473e4cd239f8592f699aa5adaf10050e6e1823c",
+                "sha256:75bb3f31ea686f1197762692a9ee6a7550b59fc6ca3a1f4b5d7e32fb98e2da2a"
+            ],
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
+            "version": "==2.8.1"
+        },
         "python3-openid": {
             "hashes": [
                 "sha256:33fbf6928f401e0b790151ed2b5290b02545e8775f982485205a066f874aaeaf",
@@ -490,11 +521,10 @@
         },
         "social-auth-core": {
             "hashes": [
-                "sha256:21c0639c56befd33ec162c2210d583bb1de8e1136d53b21bafb96afaf2f86c91",
-                "sha256:2f6ce1af8ec2b2cc37b86d647f7d4e4292f091ee556941db34b1e0e2dee77fc0",
-                "sha256:4a3cdf69c449b235cdabd54a1be7ba3722611297e69fded52e3584b1a990af25"
+                "sha256:2cc99a62ed884d3ef923b027baa9b0ef20554209214c9647cdb0012f69ba1223",
+                "sha256:604798ec00a49a84f7a173460c5997c5409080e64acc8a47e2eefd6f59439a15"
             ],
-            "version": "==3.3.3"
+            "version": "==4.0.2"
         },
         "sqlparse": {
             "hashes": [

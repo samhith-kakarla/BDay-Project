@@ -1,8 +1,6 @@
 from __future__ import absolute_import, unicode_literals
 
 from celery import shared_task
-from celery.task import periodic_task
-from celery.schedules import crontab
 
 from .models import Twin
 from datetime import date
@@ -12,11 +10,7 @@ from django.conf import settings
 
 # Sends email to every user on their birthday at 8 A.M
 
-@periodic_task(
-    run_every=(crontab(minute=0, hour=8)), 
-    name="Send Automated Emails", 
-    ignore_result=True
-)
+@shared_task(name="send_emails_on_birthday")
 def sendEmailsToEveryone():
     twins = Twin.objects.filter(birthday=date.today())
     for twin in twins:

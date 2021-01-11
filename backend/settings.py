@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 import os
 import environ
+from celery.schedules import crontab
 
 env = environ.Env()
 environ.Env.read_env()
@@ -184,3 +185,10 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'US/Eastern'
+
+CELERY_BEAT_SCHEDULE = {
+    'send_emails_to_users_on_birthday': {
+        'task': 'send_emails_on_birthday', 
+        'schedule': crontab(minute=0, hour=8)
+    }
+}

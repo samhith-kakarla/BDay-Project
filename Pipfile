@@ -18,6 +18,7 @@ stripe = "*"
 celery = "*"
 redis = "*"
 psycopg2 = "*"
+django-celery-beat = "*"
 
 [requires]
 python_version = "3.8"
