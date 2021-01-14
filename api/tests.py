@@ -16,12 +16,11 @@ class TestTwinViews(TestCase):
         self.user = User.objects.create(
             name="Micheal", email="micheal@gmail.com", password="1234"
         )
-     
-    def test_getMatchedTwins(self):
         Twin.objects.create(
             name="Twin1", owner=self.user, age=15, birthday="2003-12-22", address="address 1"
         )
-
+     
+    def test_getMatchedTwins(self):
         response = client.get(reverse('Get Matched Twins', args=['2003-12-22']))
         twins = Twin.objects.filter(birthday="2003-12-22")
         serializer = GetTwinsSerializer(twins, many=True)
@@ -42,10 +41,6 @@ class TestTwinViews(TestCase):
         self.assertEquals(response.status_code, 200)
 
     def test_getMyTwins(self):
-        Twin.objects.create(
-            name="Twin1", owner=self.user, age=15, birthday="2003-12-22", address="address 1"
-        )
-
         response = client.get(reverse('Get My Twins'))
         twins = Twin.objects.filter(owner=self.user)
         serializer = GetTwinsSerializer(twins, many=True)
@@ -54,12 +49,63 @@ class TestTwinViews(TestCase):
         self.assertEquals(response.data, serializer.data)
 
     def test_updateTwin(self):
-        Twin.objects.create(
-            name="Twin1", owner=self.user, age=15, birthday="2003-12-22", address="address 1"
-        )
+        update_twin = {
+            "name": "Twin 2", 
+            "age": 16,
+        }
 
+        response = client.post(reverse('Update Twin Info', args=[1]), data=update_twin, content_type="application/json")
+
+        self.assertEquals(response.status_code, 200)
+
+    def test_deleteTwin(self):
+        response = client.get(reverse('Delete Twin', args=[1]))
+        twin.delete()
+
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(twin.DoesNotExist, True)
+
+    def test_setTwinMatch(self):
+        update_twin = {
+            "match": ["samhith.kakarla@gmail.com"]
+        }
+
+        response = client.post(reverse('Update Twin Info', args=[1]), data=update_twin, content_type="application/json")
+        twin = Twin.objects.get(id=1)
+        serializer = SetTwinMatchSerializer(instance=twin, data=update_twin)
+        serializer.is_valid()
+
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.data, serializer.data)
+
+    def test_addImagesToTwin(self):
+        image_file_1 = File(open('../images/twin_images/238-2388681_telephone-icon-grey-blue-transparent-phone-icon-hd_AuYtI07.png', 'rb'))
+        image_file_2 = File(open('../images/twin_images/238-2388681_telephone-icon-grey-blue-transparent-phone-icon-hd.png'))
+        images = [image_file_1, image_file_2]
         
+        response = client.post(reverse('Add Images To Twin', args=[1]), data=images, content_type="application/json")
+        
+        self.assertEquals(response.status_code, 200)
 
+    def test_getTwinImages(self):
+        twin = Twin.objects.get(id=1)
+        image_file_1 = File(open('../images/twin_images/238-2388681_telephone-icon-grey-blue-transparent-phone-icon-hd_AuYtI07.png', 'rb'))
+        image_file_2 = File(open('../images/twin_images/238-2388681_telephone-icon-grey-blue-transparent-phone-icon-hd.png'))
+        Image.objects.create(image=image_file_2, twin=twin)
+        Image.objects.create(image=image_file_2, twin=twin)
+
+        response = client.get(reverse('Get Twin Images', args=[1]))
+        images = Image.objects.filter(twin=twin)
+        serializer = GetTwinImagesSerializer(images, many=True)
+
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.data, serializer.data)
+
+class TestCakeViews(TestCase):
+    pass
+        
+class TestPurchaseViews(TestCase):
+    pass
 
 # FUNCTION TESTING
 
