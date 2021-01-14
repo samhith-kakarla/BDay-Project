@@ -11,7 +11,7 @@ from django.conf import settings
 # Sends email to every user on their birthday at 8 A.M
 
 @shared_task(name="send_emails_on_birthday")
-def sendEmailsToEveryone():
+def send_emails_to_everyone():
     twins = Twin.objects.filter(birthday=date.today())
     for twin in twins:
         matches = twin.match

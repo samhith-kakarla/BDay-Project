@@ -1,10 +1,13 @@
 from django.test import TestCase, SimpleTestCase, Client
 from django.urls import reverse, resolve
 from django.contrib.auth import get_user_model
+from celery.contrib.testing.worker import start_worker
 
 from . import views
 from .models import * 
 from .serializers import *
+from .tasks import send_emails_to_everyone
+from backend.celery import app
 
 import stripe
 
@@ -203,7 +206,32 @@ class TestPurchaseViews(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertEquals(response.data, serializer.data)
 
+
 # FUNCTION TESTING
+
+class TestAutomatedEmails(TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        
+        cls.celery_worker = start_worker(app)
+        cls.celery_worker.__enter__()
+
+    @classmethod
+    def tearDownClass(cls):
+        super().tearDownClass()
+
+        cls.celery_worker.__exit__(None, None, None)
+
+    def setUp(self):
+        super().setUp()
+
+        self.task = send_emails_to_everyone.delay()
+        self.results = self.task.get()
+    
+    def test_send_emails_to_everyone_task(self):
+        self.assertEquals(self.task.status, "SUCESS")
 
 
 # MODEL TESTING
