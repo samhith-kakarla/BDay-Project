@@ -19,6 +19,15 @@ class TestTwinViews(TestCase):
         Twin.objects.create(
             name="Twin1", owner=self.user, age=15, birthday="2003-12-22", address="address 1"
         )
+        Cake.objects.create(
+            name="Cake1", tag="tag1", price=5.00
+        )
+        Cake.objects.create(
+            name="Cake2", tag="tag2", price=5.00
+        )
+        Cake.objects.create(
+            name="Cake3", tag="cake3", price=5.00
+        )
      
     def test_getMatchedTwins(self):
         response = client.get(reverse('Get Matched Twins', args=['2003-12-22']))
@@ -102,7 +111,35 @@ class TestTwinViews(TestCase):
         self.assertEquals(response.data, serializer.data)
 
 class TestCakeViews(TestCase):
-    pass
+
+    def test_getCakesByTagSearch(self):
+        tags_1 = ["tag1", "tag2", "tag3"]
+        tags_2 = ["tag2", "tag3"]
+        response_1 = [
+            { "name": "Cake1", "tag": "tag1", "price": 5.00 }, 
+            { "name": "Cake2", "tag": "tag2", "price": 5.00 }, 
+            { "name": "Cake3", "tag": "tag3", "price": 5.00 }
+        ]
+        response_2 = [
+            { "name": "Cake2", "tag": "tag2", "price": 5.00 }, 
+            { "name": "Cake3", "tag": "tag3", "price": 5.00 }
+        ]
+
+        response = client.get(reverse('Search Cakes by Tags'))
+        cakes_1 = []
+        cakes_2 = []
+        for tag in tags_1:
+            cakes = Cake.objects.filter(tag=tag)
+            cakes_1.append(cakes)
+        for tag in tags_2:
+            cakes = Cake.objects.filter(tag=tag)
+            cakes_2.append(cakes_2)
+        serializer_1 = GetCakesSerializer(cakes_1, many=True)
+        serializer_2 = GetCakesSerializer(cakes_2, many=True)
+
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(serializer_1.data, response_1)
+        self.assertEquals(serializer_2.data, response_2)
         
 class TestPurchaseViews(TestCase):
     pass
