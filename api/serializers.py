@@ -67,7 +67,7 @@ class GetPurchaseSerializer(serializers.ModelSerializer):
         model = Purchase
         fields = ('id', 'cake_id', 'address', 'complete')
 
-class fulfillPurchaseSerializer(serializers.ModelSerializer):
+class FulfillPurchaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Purchase
         fields = ('id', 'complete')

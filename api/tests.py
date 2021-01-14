@@ -6,6 +6,8 @@ from . import views
 from .models import * 
 from .serializers import *
 
+import stripe
+
 client = Client()
 
 # VIEW TESTING
@@ -27,6 +29,9 @@ class TestTwinViews(TestCase):
         )
         Cake.objects.create(
             name="Cake3", tag="cake3", price=5.00
+        )
+        Purchase.objects.create(
+            address="address1", cake_id=1, complete=False
         )
      
     def test_getMatchedTwins(self):
@@ -64,8 +69,12 @@ class TestTwinViews(TestCase):
         }
 
         response = client.post(reverse('Update Twin Info', args=[1]), data=update_twin, content_type="application/json")
+        twin = Twin.objects.get(id=1)
+        serializer = TwinSerializer(instance=twin, data=update_twin)
+        serializer.is_valid()
 
         self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.data, serializer.data)
 
     def test_deleteTwin(self):
         response = client.get(reverse('Delete Twin', args=[1]))
@@ -142,7 +151,56 @@ class TestCakeViews(TestCase):
         self.assertEquals(serializer_2.data, response_2)
         
 class TestPurchaseViews(TestCase):
-    pass
+    
+    def test_sendOrder(self):
+        purchase = {
+            "cake_id": 1, 
+            "address": "address 1", 
+            "complete": False
+        }
+
+        response = client.post(reverse('Send Purchase Order to DB'), data=purchase, content_type="application/json")
+
+        self.assertEquals(response.status_code, 200)
+
+    def test_makeStripePayment(self):
+        purchase_data = {
+            amount: 50000, 
+            cake_amount: 40000, 
+            email: "samhith.kakarla@gmail.com"
+        }
+
+        response = client.post(reverse('Make Payment to Stripe Account'), data=purchase_data, content_type="application/json")
+        payment_intent = stripe.PaymentIntent.create(
+            amount=request.data["amount"],
+            currency="usd", 
+            payment_method_types=["card"], 
+            receipt_email=request.data["email"],
+        )
+
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.data, payment_intent)
+
+    def test_getOrders(self):
+        response = client.get(reverse('Get All Orders'))
+        purchases = Purchase.objects.all()
+        serializer = GetPurchaseSerializer(purchases, many=True)
+
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.data, serializer.data)
+
+    def test_fulfillOrder(self):
+        purchase_update = {
+            "complete": True
+        }
+
+        response = client.post(reverse('Fulfill Order', args=[1]), data=purchase_update, content_type="application/json")
+        purchase = Purchase.objects.get(id=1)
+        serializer = FulfillPurchaseSerializer(instance=purchase, data=purchase_update)
+        serializer.is_valid()
+
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.data, serializer.data)
 
 # FUNCTION TESTING
 

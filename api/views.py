@@ -234,7 +234,7 @@ def getOrders(request):
 @api_view(['POST'])
 def fulfillOrder(request, pk):
     purchase = Purchase.objects.get(id=pk)
-    serializer = fulfillPurchaseSerializer(instance=purchase, data=request.data)
+    serializer = FulfillPurchaseSerializer(instance=purchase, data=request.data)
 
     if serializer.is_valid(raise_exception=True):
         serializer.save()
