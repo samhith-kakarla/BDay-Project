@@ -11,6 +11,7 @@ import stripe
 client = Client()
 
 # VIEW TESTING
+
 class TestTwinViews(TestCase):
     
     def setUp(self):
@@ -206,6 +207,53 @@ class TestPurchaseViews(TestCase):
 
 
 # MODEL TESTING
+
+class TestModels(TestCase):
+
+    def setUp(self):
+        User = get_user_model()
+        self.user = User.objects.create(
+            name="Micheal", email="micheal@gmail.com", password="1234"
+        )
+        self.twin = Twin.objects.create(
+            name="Twin1", owner=self.user, age=15, birthday="2003-12-22", address="address 1"
+        )
+        self.image_file = File(open('../images/twin_images/238-2388681_telephone-icon-grey-blue-transparent-phone-icon-hd_AuYtI07.png', 'rb'))
+
+    def test_user_model(self):
+        self.assertEquals(str(self.user), "micheal@gmail.com")
+    
+    def test_twin_model(self):
+        twin = Twin.objects.create(
+            name="Twin2", owner=self.user, age=16, birthday="2003-11-08", address="address 2"
+        )
+
+        self.assertEquals(str(twin), twin.name)
+        self.assertEquals(Twin.objects.get(name="Twin2").DoesNotExist, False)
+
+    def test_cake_model(self):
+        cake = Cake.objects.create(
+            name="Cake1", tag="tag1", price=6.00, image=self.image_file
+        )
+
+        self.assertEquals(str(cake), cake.name + ": $" + cake.price)
+        self.assertEquals(Cake.objects.get(name="Cake1").DoesNotExist, False)
+
+    def test_image_model(self):
+        image = Image.objects.create(
+            twin=self.twin, image=self.image_file
+        )
+
+        self.assertEquals(str(image), image.twin + " " + "Image")
+        self.assertEquals(Image.objects.get(twin=self.twin).DoesNotExist, False)
+
+    def test_purchase_model(self):
+        purchase = Purchase.objects.create(
+            address="Address1", cake_id=1, complete=False
+        )
+
+        self.assertEquals(str(purchase), purchase.cake_id + " " + purchase.address + " " + purchase.complete)
+        self.assertEquals(Purchase.objects.get(cake_id=1).DoesNotExist, False)
 
 
 # URL TESTING
