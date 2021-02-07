@@ -1,4 +1,4 @@
-from django.test import TestCase, SimpleTestCase, Client
+from django.test import TestCase, SimpleTestCase, Client, TransactionTestCase
 from django.urls import reverse, resolve
 from django.contrib.auth import get_user_model
 from celery.contrib.testing.worker import start_worker
@@ -101,8 +101,8 @@ class TestTwinViews(TestCase):
         self.assertEquals(response.data, serializer.data)
 
     def test_addImagesToTwin(self):
-        image_file_1 = File(open('../images/twin_images/238-2388681_telephone-icon-grey-blue-transparent-phone-icon-hd_AuYtI07.png', 'rb'))
-        image_file_2 = File(open('../images/twin_images/238-2388681_telephone-icon-grey-blue-transparent-phone-icon-hd.png'))
+        image_file_1 = open('../images/twin_images/238-2388681_telephone-icon-grey-blue-transparent-phone-icon-hd_AuYtI07.png', 'rb')
+        image_file_2 = open('../images/twin_images/238-2388681_telephone-icon-grey-blue-transparent-phone-icon-hd.png', 'rb')
         images = [image_file_1, image_file_2]
         
         response = client.post(reverse('Add Images To Twin', args=[1]), data=images, content_type="application/json")
@@ -111,8 +111,8 @@ class TestTwinViews(TestCase):
 
     def test_getTwinImages(self):
         twin = Twin.objects.get(id=1)
-        image_file_1 = File(open('../images/twin_images/238-2388681_telephone-icon-grey-blue-transparent-phone-icon-hd_AuYtI07.png', 'rb'))
-        image_file_2 = File(open('../images/twin_images/238-2388681_telephone-icon-grey-blue-transparent-phone-icon-hd.png'))
+        image_file_1 = open('../images/twin_images/238-2388681_telephone-icon-grey-blue-transparent-phone-icon-hd_AuYtI07.png', 'rb')
+        image_file_2 = open('../images/twin_images/238-2388681_telephone-icon-grey-blue-transparent-phone-icon-hd.png', 'rb')
         Image.objects.create(image=image_file_2, twin=twin)
         Image.objects.create(image=image_file_2, twin=twin)
 
@@ -209,12 +209,12 @@ class TestPurchaseViews(TestCase):
 
 # FUNCTION TESTING
 
-class TestAutomatedEmails(TestCase):
+class TestAutomatedEmails(TransactionTestCase):
 
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        
+
         cls.celery_worker = start_worker(app)
         cls.celery_worker.__enter__()
 
@@ -246,7 +246,7 @@ class TestModels(TestCase):
         self.twin = Twin.objects.create(
             name="Twin1", owner=self.user, age=15, birthday="2003-12-22", address="address 1"
         )
-        self.image_file = File(open('../images/twin_images/238-2388681_telephone-icon-grey-blue-transparent-phone-icon-hd_AuYtI07.png', 'rb'))
+        self.image_file = open('../images/twin_images/238-2388681_telephone-icon-grey-blue-transparent-phone-icon-hd_AuYtI07.png', 'rb')
 
     def test_user_model(self):
         self.assertEquals(str(self.user), "micheal@gmail.com")
