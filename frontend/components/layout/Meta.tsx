@@ -7,9 +7,9 @@ interface MetaProps {
 }
 
 export default function Meta ({
-    title = 'JoyFairy', 
-    keywords = 'joyfairy, blissfairy, joyfairy organization, celebrating, underprivileged kids, birthdays',
-    description = 'Bring the joy of celebration to every kid!', 
+    title = 'BlissFairy', 
+    keywords = 'fairy, blissfairy, blissfairy organization, celebrating, underprivileged kids, birthdays',
+    description = 'Bringing the joy of celebration to every kid!', 
 } : MetaProps) {
     
     return (
