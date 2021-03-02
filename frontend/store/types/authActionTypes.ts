@@ -19,9 +19,10 @@ export const AUTHENTICATED_FAIL = 'AUTHENTICATED_FAIL';
 
 // AUTH REQUEST INTERFACE
 interface AuthRequest {
-    loading: boolean;
     user: User;
-    error: string;
+    access: string; 
+    refresh: string;
+    isAuthenticated: boolean;
 }
 
 // AUTH INTERFACES
