@@ -217,14 +217,23 @@ export const verify = (uid: string, token: string) => async (dispatch: Dispatch<
     const body = JSON.stringify({ uid, token }); 
 
     try {
-        const res = await axios.post('http://127.0.0.1:8000/api/auth/users/activation/', body, config); 
+        await axios.post('http://127.0.0.1:8000/api/auth/users/activation/', body, config); 
 
-        // dispatch({
-        //     type: ACTIVATION_SUCCESS, 
-
-        // })
+        dispatch({
+            type: ACTIVATION_SUCCESS, 
+            user: null, 
+            access: '', 
+            refresh: '', 
+            isAuthenticated: false, 
+        });
     } catch (error) {
-
+        dispatch({
+            type: ACTIVATION_FAIL, 
+            user: null, 
+            access: '', 
+            refresh: '', 
+            isAuthenticated: false, 
+        });
     }
 }
 
@@ -253,6 +262,41 @@ export const resetPassword = (email: string) => async (dispatch: Dispatch<rootAc
 
         dispatch({
             type: RESET_PASSWORD_FAIL, 
+            user: null, 
+            access: '', 
+            refresh: '', 
+            isAuthenticated: false,
+        }); 
+    }
+}
+
+
+export const resetPasswordConfirm = (
+    uid: string, token: string, new_password: string, re_new_password: string
+) => async (dispatch: Dispatch<rootActions>) => {
+    const config = {
+        headers: {
+            'Content-type': 'application/json', 
+        }
+    }; 
+
+    const body = JSON.stringify({ uid, token, new_password, re_new_password }); 
+
+    try {
+        await axios.post('http://127.0.0.1:8000/api/auth/users/reset_password_confirm/', body, config); 
+        
+        dispatch({
+            type: RESET_PASSWORD_CONFIRM_SUCCESS, 
+            user: null, 
+            access: '', 
+            refresh: '', 
+            isAuthenticated: false,
+        }); 
+    } catch (error) {
+        console.log(error); 
+
+        dispatch({
+            type: RESET_PASSWORD_CONFIRM_FAIL, 
             user: null, 
             access: '', 
             refresh: '', 
