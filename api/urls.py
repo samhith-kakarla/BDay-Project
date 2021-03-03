@@ -6,6 +6,7 @@ urlpatterns = [
     # User Authentication
     path('auth/', include('djoser.urls'), name="User Auth"), 
     path('auth/', include('djoser.urls.jwt'), name="User Auth JWT"),
+    path('auth/', include('djoser.social.urls'), name="Social User Auth"), 
     # Twins
     path('get_twins/<str:birthday>/', views.getMatchedTwins, name="Get Matched Twins"), 
     path('add_twin/', views.addTwin, name="Add New Twin"), 

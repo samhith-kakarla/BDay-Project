@@ -19,6 +19,7 @@ celery = "*"
 redis = "*"
 psycopg2 = "*"
 django-celery-beat = "*"
+social-auth-app-django = "*"
 
 [requires]
 python_version = "3.8"

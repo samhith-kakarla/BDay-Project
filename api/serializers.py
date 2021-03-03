@@ -7,7 +7,7 @@ from .models import *
 class UserSerializer(UserCreateSerializer):
     class Meta(UserCreateSerializer.Meta):
         model = get_user_model()
-        fields = ('id', 'name', 'email', 'password')
+        fields = ('id', 'first_name', 'last_name', 'email', 'password')
 
 # REST Serializers
 
