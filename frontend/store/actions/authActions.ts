@@ -84,3 +84,146 @@ export const checkAuthenticated = () => async (dispatch: Dispatch<rootActions>) 
         }); 
     }
 }
+
+
+export const load_user = () => async (dispatch: Dispatch<rootActions>) => {
+    if (localStorage.getItem("access")) {
+        const config = {
+            headers: {
+                'Accept': 'application/json', 
+                'Authorization': `JWT ${localStorage.getItem("access")}`, 
+                'Content-type': 'application/json', 
+            }
+        }; 
+
+        try {
+            const res = await axios.get('http://127.0.0.1:8000/api/auth/users/me/', config); 
+            
+            dispatch({
+                type: USER_LOADED_SUCCESS, 
+                user: res.data, 
+                access: '', 
+                refresh: '', 
+                isAuthenticated: null,
+            }); 
+        } catch (error) {
+            console.log(error); 
+            dispatch({
+                type: USER_LOADED_FAIL, 
+                user: null, 
+                access: '', 
+                refresh: '', 
+                isAuthenticated: null, 
+            }); 
+        }
+    } else {
+        dispatch({
+            type: USER_LOADED_FAIL, 
+            user: null, 
+            access: '', 
+            refresh: '', 
+            isAuthenticated: null, 
+        }); 
+    }
+}
+
+
+export const login = (email: string, password: string) => async (dispatch: Dispatch<rootActions>) => {
+    const config = {
+        headers: {
+            'Content-type': 'application/json', 
+        }
+    }; 
+
+    const body = JSON.stringify({ email, password }); 
+
+    try {
+        const res = await axios.post('http://127.0.0.1:8000/api/auth/jwt/create/', body, config); 
+
+        dispatch({
+            type: LOGIN_SUCCESS, 
+            user: null, 
+            access: res.data.access,  
+            refresh: res.data.refresh, 
+            isAuthenticated: true, 
+        }); 
+
+        load_user(); 
+    } catch (error) {
+        console.log(error); 
+
+        dispatch({
+            type: LOGIN_FAIL, 
+            user: null, 
+            access: null,  
+            refresh: null, 
+            isAuthenticated: false, 
+        }); 
+    }
+}
+
+
+export const signup = (
+    name: string, email: string, password: string, re_password: string
+) => async (dispatch: Dispatch<rootActions>) => {
+    const config = {
+        headers: {
+            'Content-type': 'application/json', 
+        }
+    }; 
+
+    const body = JSON.stringify({ name, email, password, re_password }); 
+
+    try {
+        await axios.post('http://127.0.0.1:8000/api/auth/users/', body, config); 
+
+        dispatch({
+            type: SIGNUP_SUCCESS, 
+            user: null, 
+            access: '', 
+            refresh: '', 
+            isAuthenticated: false, 
+        }); 
+    } catch (error) {
+        dispatch({
+            type: SIGNUP_FAIL, 
+            user: null, 
+            access: '', 
+            refresh: '', 
+            isAuthenticated: false, 
+        }); 
+    }
+}
+
+
+export const logout = () => async (dispatch: Dispatch<rootActions>) => {
+    dispatch({
+        type: LOGOUT, 
+        user: null, 
+        access: '', 
+        refresh: '', 
+        isAuthenticated: false
+    });
+}
+
+
+export const verify = (uid: string, token: string) => async (dispatch: Dispatch<rootActions>) => {
+    const config = {
+        headers: {
+            'Content-type': 'application/json', 
+        }
+    }; 
+
+    const body = JSON.stringify({ uid, token }); 
+
+    try {
+        const res = await axios.post('http://127.0.0.1:8000/api/auth/users/activation/', body, config); 
+
+        // dispatch({
+        //     type: ACTIVATION_SUCCESS, 
+
+        // })
+    } catch (error) {
+
+    }
+}
