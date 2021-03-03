@@ -16,6 +16,8 @@ export const USER_LOADED_SUCCESS = 'USER_LOADED_SUCCESS';
 export const USER_LOADED_FAIL = 'USER_LOADED_FAIL'; 
 export const AUTHENTICATED_SUCCESS = 'AUTHENTICATED_SUCCESS'; 
 export const AUTHENTICATED_FAIL = 'AUTHENTICATED_FAIL'; 
+export const GOOGLE_AUTH_SUCCESS = 'GOOGLE_AUTH_SUCCESS'; 
+export const GOOGLE_AUTH_FAIL = 'GOOGLE_AUTH_FAIL'; 
 
 // AUTH REQUEST INTERFACE
 interface AuthRequest {
@@ -86,6 +88,14 @@ interface Logout extends AuthRequest {
     type: typeof LOGOUT; 
 }
 
+interface GoogleAuthSuccess extends AuthRequest {
+    type: typeof GOOGLE_AUTH_SUCCESS; 
+}
+
+interface GoogleAuthFail extends AuthRequest {
+    type: typeof GOOGLE_AUTH_FAIL; 
+}
+
 
 // AUTH ACTION TYPES CONTAINER
 export type AuthActionTypes = 
@@ -103,4 +113,7 @@ export type AuthActionTypes =
     | UserLoadedFail 
     | AuthenticatedFail
     | AuthenticatedSuccess
-    | Logout; 
+    | Logout
+    | GoogleAuthSuccess
+    | GoogleAuthFail
+    ; 

@@ -17,7 +17,9 @@ import {
     RESET_PASSWORD_CONFIRM_FAIL, 
     ACTIVATION_SUCCESS, 
     ACTIVATION_FAIL,
-    LOGOUT
+    LOGOUT, 
+    GOOGLE_AUTH_SUCCESS, 
+    GOOGLE_AUTH_FAIL,
 } from '../types/authActionTypes'; 
 
 // STATE
@@ -73,6 +75,13 @@ export const authReducer = (state = initialState, action: AuthActionTypes): Auth
         case ACTIVATION_FAIL:
             return {...state}; 
         case LOGOUT: 
+            localStorage.removeItem('access'); 
+            localStorage.removeItem('refresh'); 
+            return { ...state, access: null, refresh: null, user: null, isAuthenticated: false };
+        case GOOGLE_AUTH_SUCCESS: 
+            localStorage.setItem('access', action.access); 
+            return {...state, isAuthenticated: true, access: action.access, refresh: action.refresh }; 
+        case GOOGLE_AUTH_FAIL: 
             localStorage.removeItem('access'); 
             localStorage.removeItem('refresh'); 
             return { ...state, access: null, refresh: null, user: null, isAuthenticated: false };
