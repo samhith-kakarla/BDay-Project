@@ -11,6 +11,10 @@ import {
     USER_LOADED_FAIL, 
     AUTHENTICATED_SUCCESS,
     AUTHENTICATED_FAIL, 
+    RESET_PASSWORD_SUCCESS, 
+    RESET_PASSWORD_FAIL, 
+    RESET_PASSWORD_CONFIRM_SUCCESS, 
+    RESET_PASSWORD_CONFIRM_FAIL, 
     LOGOUT
 } from '../types/authActionTypes'; 
 
@@ -59,6 +63,14 @@ export const authReducer = (state = initialState, action: AuthActionTypes): Auth
             return {...state, isAuthenticated: true };
         case AUTHENTICATED_FAIL:
             return {...state, isAuthenticated: false };
+        case RESET_PASSWORD_SUCCESS:
+            return {...state}; 
+        case RESET_PASSWORD_FAIL:
+            return {...state}; 
+        case RESET_PASSWORD_CONFIRM_SUCCESS:
+            return {...state};
+        case RESET_PASSWORD_CONFIRM_FAIL:
+            return {...state};  
         case LOGOUT: 
             localStorage.removeItem('access'); 
             localStorage.removeItem('refresh'); 

@@ -86,7 +86,7 @@ export const checkAuthenticated = () => async (dispatch: Dispatch<rootActions>) 
 }
 
 
-export const load_user = () => async (dispatch: Dispatch<rootActions>) => {
+export const loadUser = () => async (dispatch: Dispatch<rootActions>) => {
     if (localStorage.getItem("access")) {
         const config = {
             headers: {
@@ -148,7 +148,7 @@ export const login = (email: string, password: string) => async (dispatch: Dispa
             isAuthenticated: true, 
         }); 
 
-        load_user(); 
+        loadUser(); 
     } catch (error) {
         console.log(error); 
 
@@ -225,5 +225,38 @@ export const verify = (uid: string, token: string) => async (dispatch: Dispatch<
         // })
     } catch (error) {
 
+    }
+}
+
+
+export const resetPassword = (email: string) => async (dispatch: Dispatch<rootActions>) => {
+    const config = {
+        headers: {
+            'Content-type': 'application/json', 
+        }
+    }; 
+
+    const body = JSON.stringify({ email }); 
+
+    try {
+        await axios.post('http://127.0.0.1:8000/api/auth/users/reset_password/', body, config); 
+        
+        dispatch({
+            type: RESET_PASSWORD_SUCCESS, 
+            user: null, 
+            access: '', 
+            refresh: '', 
+            isAuthenticated: false,
+        }); 
+    } catch (error) {
+        console.log(error); 
+
+        dispatch({
+            type: RESET_PASSWORD_FAIL, 
+            user: null, 
+            access: '', 
+            refresh: '', 
+            isAuthenticated: false,
+        }); 
     }
 }
