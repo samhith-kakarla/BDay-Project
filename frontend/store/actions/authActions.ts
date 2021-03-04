@@ -22,6 +22,8 @@ import {
     LOGOUT, 
     GOOGLE_AUTH_SUCCESS, 
     GOOGLE_AUTH_FAIL,
+    FACEBOOK_AUTH_SUCCESS, 
+    FACEBOOK_AUTH_FAIL
 } from '../types/authActionTypes'; 
 
 
@@ -162,6 +164,48 @@ export const googleAuthenticate = (state: string, code: string) => async (dispat
             
             dispatch({
                 type: GOOGLE_AUTH_FAIL, 
+                user: null, 
+                access: '', 
+                refresh: '', 
+                isAuthenticated: false,
+            });
+        }
+    }
+}
+
+
+export const facebookAuthenticate = (state: string, code: string) => async (dispatch: Dispatch<rootActions>) => {
+    if (state && code && !localStorage.getItem("access")) {
+        const config = {
+            headers: {
+                'Content-type': 'application/x-www-form-urlencoded', 
+            }
+        }; 
+
+        const details = {
+            'state': state, 
+            'code': code,
+        }; 
+
+        const formBody = Object.keys(details).map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(details[key])).join('&');
+
+        try {
+            const res = await axios.post(`http://127.0.0.1:8000/api/auth/o/facebook/?${formBody}`, config); 
+
+            dispatch({
+                type: FACEBOOK_AUTH_SUCCESS, 
+                user: null, 
+                access: res.data.access,  
+                refresh: res.data.refresh, 
+                isAuthenticated: true, 
+            }); 
+
+            loadUser(); 
+        } catch (error) {
+            console.log(error); 
+            
+            dispatch({
+                type: FACEBOOK_AUTH_FAIL, 
                 user: null, 
                 access: '', 
                 refresh: '', 

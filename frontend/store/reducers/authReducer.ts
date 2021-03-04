@@ -20,6 +20,8 @@ import {
     LOGOUT, 
     GOOGLE_AUTH_SUCCESS, 
     GOOGLE_AUTH_FAIL,
+    FACEBOOK_AUTH_SUCCESS, 
+    FACEBOOK_AUTH_FAIL,
 } from '../types/authActionTypes'; 
 
 // STATE
@@ -79,9 +81,12 @@ export const authReducer = (state = initialState, action: AuthActionTypes): Auth
             localStorage.removeItem('refresh'); 
             return { ...state, access: null, refresh: null, user: null, isAuthenticated: false };
         case GOOGLE_AUTH_SUCCESS: 
+        case FACEBOOK_AUTH_SUCCESS:
             localStorage.setItem('access', action.access); 
+            localStorage.setItem('refresh', action.refresh); 
             return {...state, isAuthenticated: true, access: action.access, refresh: action.refresh }; 
         case GOOGLE_AUTH_FAIL: 
+        case FACEBOOK_AUTH_FAIL:
             localStorage.removeItem('access'); 
             localStorage.removeItem('refresh'); 
             return { ...state, access: null, refresh: null, user: null, isAuthenticated: false };
