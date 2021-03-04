@@ -18,6 +18,8 @@ export const AUTHENTICATED_SUCCESS = 'AUTHENTICATED_SUCCESS';
 export const AUTHENTICATED_FAIL = 'AUTHENTICATED_FAIL'; 
 export const GOOGLE_AUTH_SUCCESS = 'GOOGLE_AUTH_SUCCESS'; 
 export const GOOGLE_AUTH_FAIL = 'GOOGLE_AUTH_FAIL'; 
+export const FACEBOOK_AUTH_SUCCESS = 'FACEBOOK_AUTH_SUCCESS'; 
+export const FACEBOOK_AUTH_FAIL = 'FACEBOOK_AUTH_FAIL'; 
 
 // AUTH REQUEST INTERFACE
 interface AuthRequest {
@@ -96,6 +98,14 @@ interface GoogleAuthFail extends AuthRequest {
     type: typeof GOOGLE_AUTH_FAIL; 
 }
 
+interface FacebookAuthSuccess extends AuthRequest {
+    type: typeof FACEBOOK_AUTH_SUCCESS; 
+}
+
+interface FacebookAuthFail extends AuthRequest {
+    type: typeof FACEBOOK_AUTH_FAIL; 
+}
+
 
 // AUTH ACTION TYPES CONTAINER
 export type AuthActionTypes = 
@@ -116,4 +126,5 @@ export type AuthActionTypes =
     | Logout
     | GoogleAuthSuccess
     | GoogleAuthFail
-    ; 
+    | FacebookAuthSuccess
+    | FacebookAuthFail; 

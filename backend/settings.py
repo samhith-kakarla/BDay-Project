@@ -161,7 +161,8 @@ DJOSER = {
     'SEND_ACTIVATION_EMAIL': True,
     'SOCIAL_AUTH_TOKEN_STRATEGY': 'djoser.social.token.TokenStrategy', 
     'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': [
-        'http://localhost:3000', 
+        'http://localhost:3000/google',
+        'http://localhost:3000/facebook', 
     ]
     'SERIALIZERS': {
         'user_create': 'api.serializers.UserCreateSerializer', 
@@ -182,9 +183,20 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
 ]
 SOCIAL_AUTH_GOOGLE_OAUTH2_EXTRA_DATA = ['first_name', 'last_name'] 
 
+# FACEBOOK AUTHENTICATION
+
+SOCIAL_AUTH_FACEBOOK_KEY = env("FACEBOOK_AUTH_KEY")
+SOCIAL_AUTH_FACEBOOK_SECRET = env("FACEBOOK_SECRET_KEY")
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+    'fields': 'email, first_name, last_name', 
+}
+
+
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2', 
-    'django.contrib.auth.backends.ModelBackend'
+    'django.contrib.auth.backends.ModelBackend', 
+    'social_core.backends.facebook.FacebookOAuth2', 
 )
 
 # Internationalization
