@@ -208,7 +208,7 @@ export const login = (email: string, password: string) => async (dispatch: Dispa
 
 
 export const signup = (
-    name: string, email: string, password: string, re_password: string
+    firstName: string, lastName: string, email: string, password: string, re_password: string
 ) => async (dispatch: Dispatch<rootActions>) => {
     const config = {
         headers: {
@@ -216,7 +216,7 @@ export const signup = (
         }
     }; 
 
-    const body = JSON.stringify({ name, email, password, re_password }); 
+    const body = JSON.stringify({ firstName, lastName, email, password, re_password }); 
 
     try {
         await axios.post('http://127.0.0.1:8000/api/auth/users/', body, config); 

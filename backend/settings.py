@@ -159,6 +159,10 @@ DJOSER = {
     'SET_PASSWORD_RETYPE': True,
     'USERNAME_RESET_CONFIRM_URL': 'email/reset/confirm/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL': True,
+    'SOCIAL_AUTH_TOKEN_STRATEGY': 'djoser.social.token.TokenStrategy', 
+    'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': [
+        'http://localhost:3000', 
+    ]
     'SERIALIZERS': {
         'user_create': 'api.serializers.UserCreateSerializer', 
         'user': 'api.serializers.UserCreateSerializer', 
