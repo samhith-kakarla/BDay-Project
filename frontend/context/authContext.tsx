@@ -27,8 +27,8 @@ export type AuthContextType = {
 
 const authContextDefault: AuthContextType = {
     user: null, 
-    access: "", 
-    refresh: "", 
+    access: typeof window == "undefined" ? "" : localStorage.getItem("access"), 
+    refresh: typeof window == "undefined" ? "" : localStorage.getItem("refresh"), 
     isAuthenticated: false, 
     checkAuthenticated: () => {}, 
     loadUser: () => {}, 
@@ -148,7 +148,12 @@ const AuthContextProvider: React.FC = ({ children }) => {
         
                 try {
                     const res = await axios.post(`http://127.0.0.1:8000/api/auth/o/google-oauth2/?${formBody}`, config); 
-        
+                    
+                    if (typeof window !== "undefined") {
+                        localStorage.setItem("access", res.data.access); 
+                        localStorage.setItem("refresh", res.data.refresh); 
+                    }
+                    
                     setUser(null); 
                     setAccess(res.data.access); 
                     setRefresh(res.data.refresh); 
@@ -158,6 +163,11 @@ const AuthContextProvider: React.FC = ({ children }) => {
                 } catch (error) {
                     console.log(error); 
                     
+                    if (typeof window !== "undefined") {
+                        localStorage.removeItem("access"); 
+                        localStorage.removeItem("refresh"); 
+                    }
+
                     setUser(null); 
                     setAccess(""); 
                     setRefresh(""); 
@@ -185,7 +195,12 @@ const AuthContextProvider: React.FC = ({ children }) => {
         
                 try {
                     const res = await axios.post(`http://127.0.0.1:8000/api/auth/o/facebook/?${formBody}`, config); 
-        
+                    
+                    if (typeof window !== "undefined") {
+                        localStorage.setItem("access", res.data.access); 
+                        localStorage.setItem("refresh", res.data.refresh); 
+                    }
+
                     setUser(null); 
                     setAccess(res.data.access); 
                     setRefresh(res.data.refresh); 
@@ -195,6 +210,11 @@ const AuthContextProvider: React.FC = ({ children }) => {
                 } catch (error) {
                     console.log(error); 
                     
+                    if (typeof window !== "undefined") {
+                        localStorage.removeItem("access"); 
+                        localStorage.removeItem("refresh"); 
+                    }
+
                     setUser(null); 
                     setAccess(""); 
                     setRefresh(""); 
@@ -216,6 +236,10 @@ const AuthContextProvider: React.FC = ({ children }) => {
         try {
             const res = await axios.post('http://127.0.0.1:8000/api/auth/jwt/create/', body, config); 
     
+            if (typeof window !== "undefined") {
+                localStorage.setItem("access", res.data.access); 
+            }
+
             setUser(null); 
             setAccess(res.data.access); 
             setRefresh(res.data.refresh); 
@@ -224,7 +248,12 @@ const AuthContextProvider: React.FC = ({ children }) => {
             loadUser(); 
         } catch (error) {
             console.log(error); 
-    
+            
+            if (typeof window !== "undefined") {
+                localStorage.removeItem("access"); 
+                localStorage.removeItem("refresh"); 
+            }
+
             setUser(null); 
             setAccess(null); 
             setRefresh(null); 
@@ -251,6 +280,11 @@ const AuthContextProvider: React.FC = ({ children }) => {
             setRefresh(""); 
             setIsAuthenticated(false); 
         } catch (error) {
+            if (typeof window !== "undefined") {
+                localStorage.removeItem("access"); 
+                localStorage.removeItem("refresh"); 
+            }
+
             setUser(null); 
             setAccess(""); 
             setRefresh(""); 
@@ -259,6 +293,11 @@ const AuthContextProvider: React.FC = ({ children }) => {
     }
 
     const logout = () => async () => {
+        if (typeof window !== "undefined") {
+            localStorage.removeItem("access"); 
+            localStorage.removeItem("refresh"); 
+        }
+
         setUser(null); 
         setAccess(""); 
         setRefresh(""); 
