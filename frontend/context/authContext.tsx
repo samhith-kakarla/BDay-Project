@@ -10,6 +10,7 @@ export type AuthContextType = {
     access: string; 
     refresh: string; 
     isAuthenticated: boolean;
+    
     // ACTIONS
     checkAuthenticated: () => void;
     loadUser: () => void; 
