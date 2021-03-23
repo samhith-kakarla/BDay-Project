@@ -102,7 +102,7 @@ DATABASES = {
         'NAME': env("DB_NAME"),
         'USER': env("DB_USER"), 
         'PASSWORD': env("DB_PASSWORD"), 
-        'HOST': 'localhost', 
+        'HOST': env("DB_HOST"), 
         'PORT': '5432', 
     }
 }
@@ -159,11 +159,11 @@ DJOSER = {
     'SET_PASSWORD_RETYPE': True,
     'USERNAME_RESET_CONFIRM_URL': 'email/reset/confirm/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL': True,
-    'SOCIAL_AUTH_TOKEN_STRATEGY': 'djoser.social.token.TokenStrategy', 
+    'SOCIAL_AUTH_TOKEN_STRATEGY': 'djoser.social.token.jwt.TokenStrategy', 
     'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': [
         'http://localhost:3000/google',
         'http://localhost:3000/facebook', 
-    ]
+    ],
     'SERIALIZERS': {
         'user_create': 'api.serializers.UserCreateSerializer', 
         'user': 'api.serializers.UserCreateSerializer', 
@@ -175,7 +175,7 @@ DJOSER = {
 # GOOGLE AUTHENTICATION
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env("GOOGLE_AUTH_KEY")
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env("GOOGLE_AUTH_SECRET")
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env("GOOGLE_SECRET_KEY")
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
     'https://www.googleapis.com/auth/userinfo.email', 
     'https://www.googleapis.com/auth/userinfo.profile', 
