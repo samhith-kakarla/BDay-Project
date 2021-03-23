@@ -19,3 +19,12 @@ export interface Twin {
     cake_tags: string[]; 
     match: string; 
 }
+
+// CAKE
+
+export interface Cake {
+    tag: string;
+    name: string;
+    price: number;
+    image: string;
+}

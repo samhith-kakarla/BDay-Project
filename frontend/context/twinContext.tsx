@@ -7,12 +7,13 @@ import { Twin } from './types';
 export type TwinContextType = {
     // STATE
     twins: Twin[]; 
-
+    selectedTwin: Twin; 
     // ACTIONS
 }
 
 const twinContextDefault: TwinContextType = {
     twins: [], 
+    selectedTwin: null,
 }
 
 
@@ -20,9 +21,10 @@ export const TwinContext = React.createContext<TwinContextType>(twinContextDefau
 
 const TwinContextProvider: React.FC = ({ children }) => {
     const [twins, setTwins] = React.useState<Twin[]>([]); 
+    const [selectedTwin, setSelectedTwin] = React.useState<Twin>(null); 
 
     return (
-        <TwinContext.Provider value={{ twins }}>
+        <TwinContext.Provider value={{ twins, selectedTwin }}>
             {children}
         </TwinContext.Provider>
     )
