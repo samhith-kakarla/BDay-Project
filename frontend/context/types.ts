@@ -7,6 +7,14 @@ export interface User {
     email: string;
 }
 
+// FAIRY
+
+export interface Fairy {
+    name: string;
+    email: string;
+    birthday: string;
+}
+
 // TWIN
 
 export interface Twin {
