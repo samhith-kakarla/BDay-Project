@@ -36,3 +36,11 @@ export interface Cake {
     price: number;
     image: string;
 }
+
+// ORDER
+
+export interface Order {
+    cakeID: number;
+    address: string;
+    complete: boolean;
+}
