@@ -12,6 +12,7 @@ export type FairyContextType = {
     fairy: Fairy; 
     matchedTwins: Twin[];
     selectedTwin: Twin; 
+    matchedCakes: Cake[], 
     selectedCake: Cake;
     order: Order; 
 
@@ -23,6 +24,7 @@ const fairyContextDefault: FairyContextType = {
     fairy: null, 
     matchedTwins: [],
     selectedTwin: null,
+    matchedCakes: [],
     selectedCake: null,
     order: null,
 
@@ -36,12 +38,13 @@ export const FairyContextProvider: React.FC = ({ children }) => {
     const [fairy, setFairy] = React.useState<Fairy>(null); 
     const [matchedTwins, setMatchedTwins] = React.useState<Twin[]>([]); 
     const [selectedTwin, setSelectedTwin] = React.useState<Twin>(null); 
+    const [matchedCakes, setMatchedCakes] = React.useState<Cake[]>(null); 
     const [selectedCake, setSelectedCake] = React.useState<Cake>(null); 
     const [order, setOrder] = React.useState<Order>(null); 
 
     return (
         <FairyContext.Provider value={{ 
-            fairy, matchedTwins, selectedTwin, selectedCake, order 
+            fairy, matchedTwins, selectedTwin, matchedCakes, selectedCake, order 
         }}>
             { children }
         </FairyContext.Provider>
