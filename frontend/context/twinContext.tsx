@@ -11,11 +11,16 @@ export type TwinContextType = {
     currentTwin: Twin;
     
     // ACTIONS
+    
 }
 
 const twinContextDefault: TwinContextType = {
+    // STATE
     twins: [], 
     currentTwin: null,
+
+    // ACTIONS
+    
 }
 
 

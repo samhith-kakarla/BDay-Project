@@ -27,10 +27,13 @@ export type AuthContextType = {
 }
 
 const authContextDefault: AuthContextType = {
+    // STATE
     user: null, 
     access: typeof window == "undefined" ? "" : localStorage.getItem("access"), 
     refresh: typeof window == "undefined" ? "" : localStorage.getItem("refresh"), 
-    isAuthenticated: false, 
+    isAuthenticated: false,
+    
+    // ACTIONS
     checkAuthenticated: () => {}, 
     loadUser: () => {}, 
     googleAuthenticate: () => {}, 
