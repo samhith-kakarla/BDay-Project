@@ -1,14 +1,13 @@
-import * as React from 'react';
-import axios from 'axios'; 
+import React, { FC, useState, createContext } from 'react';
 
 // TYPES
-import { Twin } from './types'; 
+import { Twin } from '../types'; 
 
 
 export type TwinContextType = {
     // STATE
     twins: Twin[]; 
-    currentTwin: Twin;
+    currentTwin: Twin | null;
     
     // ACTIONS
     
@@ -24,11 +23,11 @@ const twinContextDefault: TwinContextType = {
 }
 
 
-export const TwinContext = React.createContext<TwinContextType>(twinContextDefault); 
+export const TwinContext = createContext<TwinContextType>(twinContextDefault); 
 
-const TwinContextProvider: React.FC = ({ children }) => {
-    const [twins, setTwins] = React.useState<Twin[]>([]); 
-    const [currentTwin, setCurrentTwin] = React.useState<Twin>(null);
+const TwinContextProvider: FC = ({ children }) => {
+    const [twins, setTwins] = useState(twinContextDefault.twins); 
+    const [currentTwin, setCurrentTwin] = useState(twinContextDefault.currentTwin);
 
     return (
         <TwinContext.Provider value={{ twins, currentTwin }}>

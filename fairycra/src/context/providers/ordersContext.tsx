@@ -1,8 +1,7 @@
-import * as React from 'react'; 
-import axios from 'axios'; 
+import React, { FC, useState, createContext } from 'react'; 
 
 // TYPES
-import { Cake } from './types'; 
+import { Cake } from '../types'; 
 
 
 export type OrdersContextType = {
@@ -20,7 +19,7 @@ const ordersContextDefault: OrdersContextType = {
 export const OrdersContext = React.createContext<OrdersContextType>(ordersContextDefault); 
 
 const OrdersContextProvider: React.FC = ({ children }) => {
-    const [orders, setOrders] = React.useState<Cake[]>([]); 
+    const [orders, setOrders] = useState(ordersContextDefault.orders); 
 
     return (
         <OrdersContext.Provider value={{ orders }}>
@@ -28,3 +27,6 @@ const OrdersContextProvider: React.FC = ({ children }) => {
         </OrdersContext.Provider>
     )
 }
+
+
+export default OrdersContextProvider; 
