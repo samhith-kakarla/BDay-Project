@@ -2,7 +2,7 @@
 // AUTH
 
 export interface User {
-    id: number; 
+    id: string; 
     name: string;
     email: string;
 }
@@ -32,6 +32,7 @@ export interface Twin {
 // CAKE
 
 export interface Cake {
+    id: string;
     tag: string;
     name: string;
     price: number;
@@ -41,6 +42,7 @@ export interface Cake {
 // ORDER
 
 export interface Order {
+    id: string;
     cakeID: number;
     address: string;
     complete?: boolean;

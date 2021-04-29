@@ -12,7 +12,7 @@ export type TwinContextType = {
     
     // ACTIONS
     getMyTwins: (ownerID: string) => void; // Firestore
-    addNewTwin: (twin: Twin) => void; // Firestore
+    addNewTwin: (ownerID: string, twin: Twin) => void; // Firestore
     updateTwinInfo: (twin: Twin) => void; // Firestore
     deleteTwin: (twin: Twin) => void; // Firestore
     updateTwinImages: (twin: Twin) => void; // Storage (Images)
@@ -40,8 +40,8 @@ const TwinContextProvider: FC = ({ children }) => {
     const [twins, setTwins] = useState(twinContextDefault.twins); 
     const [currentTwin, setCurrentTwin] = useState(twinContextDefault.currentTwin);
 
-    function getMyTwins (owner: string) {
-        firebase.firestore().collection('twins').where("owner", "==", owner).get().then((query) => {
+    function getMyTwins (ownerID: string) {
+        firebase.firestore().collection('twins').where("owner", "==", ownerID).get().then((query) => {
             console.log(query); 
             query.docs.forEach((doc) => {
                 const myTwin: Twin = {
@@ -65,8 +65,23 @@ const TwinContextProvider: FC = ({ children }) => {
         });
     }
 
-    function addNewTwin (twin: Twin) {
-
+    function addNewTwin (ownerID: string, twin: Twin) {
+        firebase.firestore().collection('twins').add({
+            owner: ownerID, 
+            name: twin.name, 
+            age: twin.age, 
+            birthday: twin.birthday, 
+            address: twin.address, 
+            cake_tags: twin.cake_tags, 
+            match : "", 
+        }).then((doc: any) => {
+            console.log(doc); 
+            setTwins([...twins, doc]); 
+            console.log("Twin added!"); 
+        }).catch((error) => {
+            console.log(error); 
+            console.log("Twin not added"); 
+        }); 
     }
 
     function updateTwinInfo (twin: Twin) {
@@ -74,7 +89,12 @@ const TwinContextProvider: FC = ({ children }) => {
     }
 
     function deleteTwin (twin: Twin) {
-
+        firebase.firestore().collection('twins').doc(twin.id).delete().then(() => {
+            console.log("Twin deleted!");
+        }).catch((error) => {
+            console.log(error); 
+            console.log("Twin not deleted :("); 
+        })
     }
 
     function updateTwinImages (twin: Twin) {
