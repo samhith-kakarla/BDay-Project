@@ -18,7 +18,7 @@ export const combineComponents = (...components: FC[]): FC => {
         return ({ children }: ComponentProps<FC>): JSX.Element => {
             return (
                 <AccumulatedComponents>
-                <CurrentComponent>{children}</CurrentComponent>
+                    <CurrentComponent>{children}</CurrentComponent>
                 </AccumulatedComponents>
             );
         };

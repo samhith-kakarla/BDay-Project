@@ -10,7 +10,7 @@ export type TwinContextType = {
     currentTwin: Twin | null;
     
     // ACTIONS
-    
+    getMyTwins: (ownerID: string) => void;
 }
 
 const twinContextDefault: TwinContextType = {
@@ -19,7 +19,7 @@ const twinContextDefault: TwinContextType = {
     currentTwin: null,
 
     // ACTIONS
-    
+    getMyTwins: () => {}, 
 }
 
 
@@ -29,8 +29,15 @@ const TwinContextProvider: FC = ({ children }) => {
     const [twins, setTwins] = useState(twinContextDefault.twins); 
     const [currentTwin, setCurrentTwin] = useState(twinContextDefault.currentTwin);
 
+    function getMyTwins (owner: string) {
+        
+    }
+
     return (
-        <TwinContext.Provider value={{ twins, currentTwin }}>
+        <TwinContext.Provider value={{ 
+            twins, currentTwin, 
+            getMyTwins, 
+        }}>
             { children }
         </TwinContext.Provider>
     )

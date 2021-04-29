@@ -19,7 +19,6 @@ export type FairyContextType = {
     // ACTIONS
     becomeAFairy: (fairy: Fairy) => void;
     getMatchedTwins: (birthday: string) => void; 
-    filterTwins: () => void; 
     selectATwin: (twin: Twin) => void; 
     getFilteredCakes: (tag1: string, tag2: string, tag3: string) => void; 
     selectACake: (cake: Cake) => void;
@@ -38,7 +37,6 @@ const fairyContextDefault: FairyContextType = {
     // ACTIONS
     becomeAFairy: () => {}, 
     getMatchedTwins: () => {}, 
-    filterTwins: () => {}, 
     getFilteredCakes: () => {}, 
     selectATwin: () => {}, 
     selectACake: () => {},
@@ -58,19 +56,52 @@ const FairyContextProvider: FC = ({ children }) => {
 
     
     function becomeAFairy (fairy: Fairy) {
-
+        firebase.firestore().collection('fairys').add({
+            name: fairy.name, email: fairy.email, birthday: fairy.birthday, 
+        }).then((doc) => {
+            console.log(doc.id); 
+            const newFairy = {
+                id: doc.id, name: fairy.name, email: fairy.email, birthday: fairy.birthday
+            }; 
+            setFairy(newFairy); 
+        }).catch((error) => {
+            console.log(error); 
+            console.log("Fairy not added"); 
+        });
     }
 
     function getMatchedTwins (birthday: string) {
-        
-    }
-
-    function filterTwins () {
-        
+        firebase.firestore().collection('twins').where("birthday", "==", birthday).get().then((query) => {
+            console.log(query); 
+            query.docs.forEach((doc) => {
+                const matchedTwin: Twin = {
+                    id: doc.id, 
+                    name: doc.data().name, 
+                    age: doc.data().age, 
+                    birthday: doc.data().birthday,
+                    address: doc.data().address, 
+                    cake_tags: doc.data().cake_tags,
+                }
+                setMatchedTwins([...matchedTwins, matchedTwin]); 
+            });
+            console.log(matchedTwins); 
+            console.log("Got matched Twins!"); 
+        }).catch((error) => {
+            console.log(error); 
+            console.log("Error getting matched twins");
+        });
     }
 
     function selectATwin (twin: Twin) {
         setSelectedTwin(twin); 
+        firebase.firestore().collection('twins').doc(twin.id).update({
+            match: fairy?.email, 
+        }).then(() => {
+            console.log("Twin Selected!"); 
+        }).catch((error) => {
+            console.log(error); 
+            console.log("Twin not selected"); 
+        });
     }
 
     function getFilteredCakes (tag1: string, tag2: string, tag3: string) {
@@ -81,15 +112,28 @@ const FairyContextProvider: FC = ({ children }) => {
         setSelectedCake(cake); 
     }
 
-    function purchaseCake () {
-        
+    function purchaseCake (order: Order) {
+        setOrder(order); 
+        firebase.firestore().collection('orders').add({
+            cakeID: order.cakeID, 
+            address: order.address, 
+            complete: false, 
+        }).then((doc) => {
+            console.log(doc); 
+            console.log("Order sent to DB"); 
+            setOrder(null); 
+        }).then((error) => {
+            console.log(error); 
+            console.log("Order not sent to DB"); 
+        });
     }
 
 
     return (
         <FairyContext.Provider value={{ 
             fairy, matchedTwins, selectedTwin, matchedCakes, selectedCake, order, 
-            becomeAFairy, getMatchedTwins, filterTwins, selectATwin, getFilteredCakes, selectACake, purchaseCake 
+            becomeAFairy, getMatchedTwins, selectATwin, getFilteredCakes, 
+            selectACake, purchaseCake 
         }}>
             { children }
         </FairyContext.Provider>

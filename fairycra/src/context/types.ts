@@ -10,6 +10,7 @@ export interface User {
 // FAIRY
 
 export interface Fairy {
+    id: string | null | undefined; 
     name: string;
     email: string;
     birthday: string;
@@ -18,14 +19,14 @@ export interface Fairy {
 // TWIN
 
 export interface Twin {
-    id: number; 
+    id: string; 
+    owner?: string;
     name: string; 
     age: number; 
     birthday: string;
     address: string; 
-    gift_tags: string[]; 
     cake_tags: string[]; 
-    match: string; 
+    match?: string; 
 }
 
 // CAKE
@@ -42,5 +43,5 @@ export interface Cake {
 export interface Order {
     cakeID: number;
     address: string;
-    complete: boolean;
+    complete?: boolean;
 }
