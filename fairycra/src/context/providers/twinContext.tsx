@@ -15,8 +15,8 @@ export type TwinContextType = {
     addNewTwin: (twin: Twin) => void; // Firestore
     updateTwinInfo: (twin: Twin) => void; // Firestore
     deleteTwin: (twin: Twin) => void; // Firestore
-    updateTwinImages: (twin: Twin) => void; // Storage
-    getTwinImages: (twin: Twin) => void; // Storage
+    updateTwinImages: (twin: Twin) => void; // Storage (Images)
+    getTwinImages: (twin: Twin) => void; // Storage (Images)
 }
 
 const twinContextDefault: TwinContextType = {
