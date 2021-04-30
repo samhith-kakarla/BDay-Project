@@ -104,8 +104,23 @@ const FairyContextProvider: FC = ({ children }) => {
         });
     }
 
-    function getFilteredCakes (tag1: string, tag2: string, tag3: string) {
-        
+    async function getFilteredCakes (tag1: string, tag2: string, tag3: string) {
+        const tag1CakesRef = firebase.firestore().collection('cakes').where("tag", "==", tag1).get(); 
+        const tag2CakesRef = firebase.firestore().collection('cakes').where("tag", "==", tag2).get(); 
+        const tag3CakesRef = firebase.firestore().collection('cakes').where("tag", "==", tag3).get(); 
+
+        const [tag1CakesSnapshot, tag2CakesSnapshot, tag3CakesSnapshot] = await Promise.all([
+            tag1CakesRef, tag2CakesRef, tag3CakesRef
+        ]);
+
+        const tag1Cakes = tag1CakesSnapshot.docs; 
+        const tag2Cakes = tag2CakesSnapshot.docs;
+        const tag3Cakes = tag3CakesSnapshot.docs;
+        const filteredCakes = tag1Cakes.concat(tag2Cakes).concat(tag3Cakes);
+
+        filteredCakes.forEach((cake: any) => {
+            setMatchedCakes([...matchedCakes, cake]); 
+        }); 
     }
 
     function selectACake (cake: Cake) {
