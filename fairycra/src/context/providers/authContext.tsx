@@ -59,17 +59,20 @@ const AuthContextProvider: FC = ({ children }) => {
     function signup (fName: string, lName: string, email: string, pass: string) {
         firebase.auth().createUserWithEmailAndPassword(email, pass).then(
             (cred: firebase.auth.UserCredential) => {
-                // Add First Name and Last Name to DB
+                // Email Verification
+                cred.user?.sendEmailVerification(); 
+                firebase.auth().signOut(); 
+                console.log("Verification Email Sent!"); 
+
+                // Add User to DB
                 firebase.firestore().collection('users').doc(cred.user!.uid).set({
                     email: email, 
                     firstName: fName, 
                     lastName: lName, 
-                }).then(() => {
+                }).then(() => { 
                     console.log("User Created!"); 
-                    setIsAuthenticated(true);
                 }).catch((error) => {
                     console.log(error.message); 
-                    setIsAuthenticated(false); 
                 }); 
             }   
         ); 
@@ -138,7 +141,8 @@ const AuthContextProvider: FC = ({ children }) => {
     return (
         <AuthContext.Provider value={{ 
             user, isAuthenticated, loadingAuthState, 
-            googleAuthenticate, login, signup, logout, sendResetPasswordLink, resetPassword
+            googleAuthenticate, login, signup, logout, 
+            sendResetPasswordLink, resetPassword
         }}>
             {children}
         </AuthContext.Provider>
