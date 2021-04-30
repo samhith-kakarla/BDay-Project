@@ -8,21 +8,19 @@ import { Twin } from '../types';
 export type TwinContextType = {
     // STATE
     twins: Twin[]; 
-    currentTwin: Twin | null;
     
     // ACTIONS
     getMyTwins: (ownerID: string) => void; // Firestore
     addNewTwin: (ownerID: string, twin: Twin) => void; // Firestore
     updateTwinInfo: (twin: Twin) => void; // Firestore
     deleteTwin: (twin: Twin) => void; // Firestore
-    updateTwinImages: (twin: Twin) => void; // Storage (Images)
+    updateTwinImages: (twin: Twin, files: any[]) => void; // Storage (Images)
     getTwinImages: (twin: Twin) => void; // Storage (Images)
 }
 
 const twinContextDefault: TwinContextType = {
     // STATE
     twins: [], 
-    currentTwin: null,
 
     // ACTIONS
     getMyTwins: () => {}, 
@@ -38,7 +36,6 @@ export const TwinContext = createContext<TwinContextType>(twinContextDefault);
 
 const TwinContextProvider: FC = ({ children }) => {
     const [twins, setTwins] = useState(twinContextDefault.twins); 
-    const [currentTwin, setCurrentTwin] = useState(twinContextDefault.currentTwin);
 
     function getMyTwins (ownerID: string) {
         firebase.firestore().collection('twins').where("owner", "==", ownerID).get().then((query) => {
@@ -85,7 +82,12 @@ const TwinContextProvider: FC = ({ children }) => {
     }
 
     function updateTwinInfo (twin: Twin) {
-
+        firebase.firestore().collection('twins').doc(twin.id).update({ ...twin }).then(() => {
+            console.log("Twin updated!"); 
+        }).catch((error) => {
+            console.log(error); 
+            console.log("Twin failed to update :(");
+        });
     }
 
     function deleteTwin (twin: Twin) {
@@ -97,17 +99,69 @@ const TwinContextProvider: FC = ({ children }) => {
         })
     }
 
-    function updateTwinImages (twin: Twin) {
-
+    function updateTwinImages (twin: Twin, files: any[]) {
+        const metadata: any = { twin_id: twin.id }; 
+        const storageRef = firebase.storage().ref(); 
+        const promises = []; 
+        
+        files.forEach((file) => {
+            const uploadTask = storageRef.put(file, metadata); 
+            promises.push(uploadTask); 
+            uploadTask.on(
+                firebase.storage.TaskEvent.STATE_CHANGED, 
+                (snapshot) => {
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    console.log('Upload is ' + progress + '% done'); 
+                    switch (snapshot.state) {
+                        case firebase.storage.TaskState.PAUSED:
+                          console.log('Upload is paused');
+                          break;
+                        case firebase.storage.TaskState.RUNNING:
+                          console.log('Upload is running');
+                          break;
+                    }
+                }, 
+                (error) => {
+                    console.log(error.code); 
+                }, 
+                () => {
+                    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                        console.log('File available at', downloadURL);
+                    });
+                }
+            ); 
+        }); 
     }
 
-    function getTwinImages (twin: Twin) {
+    async function getTwinImages (twin: Twin) {
+        const twinImagesRef = await firebase.storage().ref('images/twin_images').listAll(); 
+        const twinImagesURLs: any[] = []; 
 
+        twinImagesRef.items.forEach((file) => {
+            let twinImageMetadata: any;
+            file.getMetadata().then((metadata) => {
+                console.log("Metadata retrieved!"); 
+                twinImageMetadata = metadata; 
+            }).then(() => {
+                if (twinImageMetadata.twin_id === twin.id) {
+                    file.getDownloadURL().then((url) => {
+                        twinImagesURLs.push(url); 
+                        console.log("Success downloading image!"); 
+                    }).catch((error) => {
+                        console.log(error.code); 
+                        console.log("Could not download image :("); 
+                    }); 
+                }
+            }).catch((error) => {
+                console.log(error); 
+                console.log("Could not retrieve metadata"); 
+            }); 
+        }); 
     }
 
     return (
         <TwinContext.Provider value={{ 
-            twins, currentTwin, 
+            twins,
             getMyTwins, addNewTwin, updateTwinInfo, deleteTwin, 
             updateTwinImages, getTwinImages
         }}>
