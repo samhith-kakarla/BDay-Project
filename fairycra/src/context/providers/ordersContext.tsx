@@ -1,4 +1,4 @@
-import React, { FC, useState, createContext } from 'react'; 
+import React, { useState, createContext } from 'react'; 
 import firebase from '../../firebase/firebaseConfig'; 
 
 // TYPES
@@ -24,7 +24,7 @@ const ordersContextDefault: OrdersContextType = {
 }
 
 
-export const OrdersContext = React.createContext<OrdersContextType>(ordersContextDefault); 
+export const OrdersContext = createContext<OrdersContextType>(ordersContextDefault); 
 
 const OrdersContextProvider: React.FC = ({ children }) => {
     const [orders, setOrders] = useState(ordersContextDefault.orders); 
