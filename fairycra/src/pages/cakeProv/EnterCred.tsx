@@ -9,7 +9,7 @@ const EnterCred: React.FC = () => {
 
     return (
         <div>
-
+            <h1>ENTER CRED</h1>
         </div>
     )
 }

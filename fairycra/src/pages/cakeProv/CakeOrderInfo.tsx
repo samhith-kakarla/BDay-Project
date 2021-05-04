@@ -8,7 +8,7 @@ const CakeOrderInfo: React.FC = () => {
     
     return (
         <div>
-            
+            <h1>CAKE ORDER INFO</h1>
         </div>
     )
 }
