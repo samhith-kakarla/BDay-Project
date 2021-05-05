@@ -3,6 +3,13 @@ import './App.css';
 import { BrowserRouter as Router, Switch, Redirect, Route } from 'react-router-dom'; 
 
 // PAGES
+import Home from './pages/main/Home'; 
+
+import SelectTwin from './pages/fairies/SelectTwin'; 
+import SelectCake from './pages/fairies/SelectCake'; 
+import OrderCake from './pages/fairies/OrderCake'; 
+import Complete from './pages/fairies/Complete'; 
+
 import Login from './pages/twinProv/Login'; 
 import Register from './pages/twinProv/Register'; 
 import ForgotPass from './pages/twinProv/ForgotPass'; 
@@ -27,11 +34,16 @@ function App() {
               <Router>
                   <div className="App">
                         <Switch>
+                            
                             {/* MAIN ROUTES */}
-                            <Route exact path="/" />
+                            <Route exact path="/" component={Home} />
 
                             {/* FAIRY ROUTES */}
-                                
+                            <Route exact path="/select-twin" component={SelectTwin} />
+                            <Route exact path="/select-cake" component={SelectCake} />
+                            <Route exact path="/order" component={OrderCake} />
+                            <Route exact path="/success" component={Complete} />
+
                             {/* TWIN PROVIDER ROUTES */}
                             <Route exact path={"/t/login"} component={Login} />
                             <Route exact path={"/t/register"} component={Register} />
@@ -47,7 +59,7 @@ function App() {
                             {/* CAKE PROVIDER ROUTES */}
                             <Route exact path={"/c/enter"} component={EnterCred} />
                             <Route exact path={"/c/dashboard"} component={CakesDashboard} />
-                            <Route exact path={"/c/orderInfo"} component={CakeOrderInfo} />
+                            <Route exact path={"/c/order-info"} component={CakeOrderInfo} />
                             
                         </Switch>
                   </div>
