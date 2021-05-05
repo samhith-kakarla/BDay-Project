@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Redirect, Route } from 'react-router-d
 
 // PAGES
 import Home from './pages/main/Home'; 
+import OurMission from './pages/main/OurMission'; 
 
 import SelectTwin from './pages/fairies/SelectTwin'; 
 import SelectCake from './pages/fairies/SelectCake'; 
@@ -34,9 +35,10 @@ function App() {
               <Router>
                   <div className="App">
                         <Switch>
-                            
+
                             {/* MAIN ROUTES */}
                             <Route exact path="/" component={Home} />
+                            <Route exact path="/about" component={OurMission} />
 
                             {/* FAIRY ROUTES */}
                             <Route exact path="/select-twin" component={SelectTwin} />
