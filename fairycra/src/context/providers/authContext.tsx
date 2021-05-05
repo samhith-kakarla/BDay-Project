@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect, createContext } from 'react'; 
+import React, { useState, useEffect, createContext, useContext } from 'react'; 
 import firebase from '../../firebase/firebaseConfig'; 
 
 
@@ -17,7 +17,7 @@ export type AuthContextType = {
     resetPassword: (new_pass: string) => void;
 }
 
-const authContextDefault: AuthContextType = {
+export const authContextDefault: AuthContextType = {
     // STATE
     user: null,  
     isAuthenticated: false,
@@ -32,9 +32,12 @@ const authContextDefault: AuthContextType = {
     resetPassword: () => {}, 
 }
 
-export const AuthContext = React.createContext<AuthContextType>(authContextDefault); 
+export const AuthContext = createContext<AuthContextType>(authContextDefault); 
+export const useAuthContext = () => useContext(AuthContext); 
 
-const AuthContextProvider: FC = ({ children }) => {
+
+
+const AuthContextProvider: React.FC = ({ children }) => {
     const [user, setUser] = useState(authContextDefault.user); 
     const [isAuthenticated, setIsAuthenticated] = useState(authContextDefault.isAuthenticated);
     const [loadingAuthState, setLoadingAuthState] = useState(authContextDefault.loadingAuthState); 

@@ -1,4 +1,4 @@
-import React, { FC, useState, createContext } from 'react';
+import React, { FC, useState, createContext, useContext } from 'react';
 import firebase from '../../firebase/firebaseConfig'; 
 
 // TYPES
@@ -18,7 +18,7 @@ export type TwinContextType = {
     getTwinImages: (twin: Twin) => void; // Storage (Images)
 }
 
-const twinContextDefault: TwinContextType = {
+export const twinContextDefault: TwinContextType = {
     // STATE
     twins: [], 
 
@@ -33,6 +33,9 @@ const twinContextDefault: TwinContextType = {
 
 
 export const TwinContext = createContext<TwinContextType>(twinContextDefault); 
+export const useTwinContext = () => useContext(TwinContext); 
+
+
 
 const TwinContextProvider: FC = ({ children }) => {
     const [twins, setTwins] = useState(twinContextDefault.twins); 

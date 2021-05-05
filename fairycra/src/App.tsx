@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Switch, Redirect, Route } from 'react-router-dom'; 
+import firebase from './firebase/firebaseConfig'; 
 
 // PAGES
 import Home from './pages/main/Home'; 
@@ -27,15 +28,57 @@ import CakesDashboard from './pages/cakeProv/CakesDashboard';
 import CakeOrderInfo from './pages/cakeProv/CakeOrderInfo'; 
 
 // CONTEXT
-import AppContextProvider from './context/appContext'; 
-import { FairyContext } from './context/providers/fairyContext'; 
-import { Fairy } from './context/types'; 
+import { FairyContext, fairyContextDefault } from './context/providers/fairyContext'; 
+import { AuthContext, authContextDefault } from './context/providers/authContext'; 
+import { TwinContext, twinContextDefault } from './context/providers/twinContext'; 
+import { OrdersContext, ordersContextDefault } from './context/providers/ordersContext'; 
+
+// TYPES
+import { Fairy, Twin, Cake, Order } from './context/types'; 
 
 function App() {
-    const [fairy, setFairy] = useState<Fairy>(); 
+    // AUTH STATE
+    const [user, setUser] = useState(authContextDefault.user); 
+    const [isAuthenticated, setIsAuthenticated] = useState(authContextDefault.isAuthenticated);
+    const [loadingAuthState, setLoadingAuthState] = useState(authContextDefault.loadingAuthState); 
+
+    // FAIRY STATE
+    const [fairy, setFairy] = useState(fairyContextDefault.fairy); 
+    const [matchedTwins, setMatchedTwins] = useState(fairyContextDefault.matchedTwins); 
+    const [selectedTwin, setSelectedTwin] = useState(fairyContextDefault.selectedTwin); 
+    const [matchedCakes, setMatchedCakes] = useState(fairyContextDefault.matchedCakes); 
+    const [selectedCake, setSelectedCake] = useState(fairyContextDefault.selectedCake); 
+    const [order, setOrder] = useState(fairyContextDefault.order); 
+
+    // TWIN STATE
+    const [twins, setTwins] = useState(twinContextDefault.twins); 
+
+    // ORDERS STATE 
+    const [orders, setOrders] = useState(ordersContextDefault.orders); 
 
     return (
-        <FairyContext.Provider value={{ fairy: null, setFairy }}>
+        <AuthContext.Provider
+            value={{
+                user, isAuthenticated, loadingAuthState, 
+                googleAuthenticate, login, signup, logout, 
+                sendResetPasswordLink, resetPassword
+            }}
+        >
+        <FairyContext.Provider 
+            value={{ 
+                fairy, matchedTwins, selectedTwin, matchedCakes, selectedCake, order, 
+                becomeAFairy, getMatchedTwins, selectATwin, getFilteredCakes, 
+                selectACake, purchaseCake   
+            }}
+        >
+        <TwinContext.Provider
+            value={{
+                twins,
+                getMyTwins, addNewTwin, updateTwinInfo, deleteTwin, 
+                updateTwinImages, getTwinImages
+            }}
+        >
+        <OrdersContext.Provider value={{ orders, getOrders, fulfillOrder }} >
               <Router>
                   <div className="App">
                         <Switch>
@@ -70,7 +113,10 @@ function App() {
                         </Switch>
                   </div>
               </Router>
+        </OrdersContext.Provider>
+        </TwinContext.Provider>
         </FairyContext.Provider>
+        </AuthContext.Provider>
     );
 }
 

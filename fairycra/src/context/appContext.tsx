@@ -1,16 +1,17 @@
 import React, { FC, ComponentProps } from 'react'; 
 
 // CONTEXT
-import AuthContextProvider from './providers/authContext'; 
-// import FairyContextProvider from './providers/fairyContext'; 
-import OrdersContextProvider from './providers/ordersContext'; 
-import TwinContextProvider from './providers/twinContext'; 
+import { AuthContext }from './providers/authContext'; 
+import { FairyContext } from './providers/fairyContext'; 
+import { OrdersContext } from './providers/ordersContext'; 
+import { TwinContext } from './providers/twinContext'; 
+
 
 const providers = [
-    AuthContextProvider, 
-    // FairyContextProvider, 
-    OrdersContextProvider, 
-    TwinContextProvider,
+    AuthContext.Provider, 
+    FairyContext.Provider, 
+    OrdersContext.Provider, 
+    TwinContext.Provider, 
 ]; 
 
 export const combineComponents = (...components: FC[]): FC => {
