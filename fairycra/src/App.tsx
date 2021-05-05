@@ -33,8 +33,6 @@ import { AuthContext, authContextDefault } from './context/providers/authContext
 import { TwinContext, twinContextDefault } from './context/providers/twinContext'; 
 import { OrdersContext, ordersContextDefault } from './context/providers/ordersContext'; 
 
-// TYPES
-import { Fairy, Twin, Cake, Order } from './context/types'; 
 
 function App() {
     // AUTH STATE
@@ -56,29 +54,28 @@ function App() {
     // ORDERS STATE 
     const [orders, setOrders] = useState(ordersContextDefault.orders); 
 
+    useEffect(() => {
+        firebase.auth().onAuthStateChanged((user: any) => {
+          setUser(user);
+          setLoadingAuthState(false);
+       });
+    }, []);
+
     return (
         <AuthContext.Provider
             value={{
                 user, isAuthenticated, loadingAuthState, 
-                googleAuthenticate, login, signup, logout, 
-                sendResetPasswordLink, resetPassword
+                setUser, setIsAuthenticated, setLoadingAuthState
             }}
         >
         <FairyContext.Provider 
             value={{ 
                 fairy, matchedTwins, selectedTwin, matchedCakes, selectedCake, order, 
-                becomeAFairy, getMatchedTwins, selectATwin, getFilteredCakes, 
-                selectACake, purchaseCake   
+                setFairy, setMatchedTwins, setSelectedTwin, setMatchedCakes, setSelectedCake, setOrder 
             }}
         >
-        <TwinContext.Provider
-            value={{
-                twins,
-                getMyTwins, addNewTwin, updateTwinInfo, deleteTwin, 
-                updateTwinImages, getTwinImages
-            }}
-        >
-        <OrdersContext.Provider value={{ orders, getOrders, fulfillOrder }} >
+        <TwinContext.Provider value={{ twins, setTwins }} >
+        <OrdersContext.Provider value={{ orders, setOrders }} >
               <Router>
                   <div className="App">
                         <Switch>

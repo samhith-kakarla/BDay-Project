@@ -17,12 +17,12 @@ export type FairyContextType = {
     order: Order | null; 
 
     // ACTIONS
-    becomeAFairy: (fairy: Fairy) => void;
-    getMatchedTwins: (birthday: string) => void; 
-    selectATwin: (twin: Twin) => void; 
-    getFilteredCakes: (tag1: string, tag2: string, tag3: string) => void; 
-    selectACake: (cake: Cake) => void;
-    purchaseCake: (order: Order) => void; 
+    setFairy: (fairy: Fairy) => void;
+    setMatchedTwins: (matchedTwins: Twin[]) => void;
+    setSelectedTwin: (selectedTwin: Twin) => void; 
+    setMatchedCakes: (matchedCakes: Cake[]) => void; 
+    setSelectedCake: (selectedCake: Cake) => void; 
+    setOrder: (order: Order) => void; 
 }
 
 export const fairyContextDefault: FairyContextType = {
@@ -35,17 +35,19 @@ export const fairyContextDefault: FairyContextType = {
     order: null,
 
     // ACTIONS
-    becomeAFairy: () => {}, 
-    getMatchedTwins: () => {}, 
-    getFilteredCakes: () => {}, 
-    selectATwin: () => {}, 
-    selectACake: () => {},
-    purchaseCake: () => {}, 
+    setFairy: () => {}, 
+    setMatchedTwins: () => {}, 
+    setSelectedTwin: () => {}, 
+    setMatchedCakes: () => {}, 
+    setSelectedCake: () => {}, 
+    setOrder: () => {}, 
 }
 
 
 export const FairyContext = createContext<FairyContextType>(fairyContextDefault); 
 export const useFairyContext = () => useContext(FairyContext); 
+
+
 
 const FairyContextProvider: FC = ({ children }) => {
     const [fairy, setFairy] = useState(fairyContextDefault.fairy); 
@@ -148,8 +150,7 @@ const FairyContextProvider: FC = ({ children }) => {
     return (
         <FairyContext.Provider value={{ 
             fairy, matchedTwins, selectedTwin, matchedCakes, selectedCake, order, 
-            becomeAFairy, getMatchedTwins, selectATwin, getFilteredCakes, 
-            selectACake, purchaseCake 
+            setFairy, setMatchedTwins, setSelectedTwin, setMatchedCakes, setSelectedCake, setOrder
         }}>
             { children }
         </FairyContext.Provider>

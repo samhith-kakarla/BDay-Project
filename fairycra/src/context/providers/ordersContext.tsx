@@ -10,8 +10,7 @@ export type OrdersContextType = {
     orders: Order[];
 
     // ACTIONS
-    getOrders: () => void; // Only unfulfilled orders
-    fulfillOrder: (order: Order) => void;
+    setOrders: (orders: Order[]) => void; 
 }
 
 export const ordersContextDefault: OrdersContextType = {
@@ -19,8 +18,7 @@ export const ordersContextDefault: OrdersContextType = {
     orders: [], 
 
     // ACTIONS
-    getOrders: () => {}, 
-    fulfillOrder: () => {},
+    setOrders: () => {}, 
 }
 
 
@@ -64,7 +62,7 @@ const OrdersContextProvider: React.FC = ({ children }) => {
     }
 
     return (
-        <OrdersContext.Provider value={{ orders, getOrders, fulfillOrder }}>
+        <OrdersContext.Provider value={{ orders, setOrders }}>
             { children }
         </OrdersContext.Provider>
     )

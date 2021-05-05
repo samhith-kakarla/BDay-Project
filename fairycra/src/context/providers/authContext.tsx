@@ -9,12 +9,9 @@ export type AuthContextType = {
     loadingAuthState: boolean;
     
     // ACTIONS
-    googleAuthenticate: () => void;
-    login: (email: string, password: string) => void;
-    signup: (fName: string, lName: string, email: string, pass: string) => void;
-    logout: () => void;
-    sendResetPasswordLink: (email: string) => void;
-    resetPassword: (new_pass: string) => void;
+    setUser: (user: firebase.User) => void; 
+    setIsAuthenticated: (isAuthenticated: boolean | null) => void;
+    setLoadingAuthState: (loadingAuthState: boolean) => void; 
 }
 
 export const authContextDefault: AuthContextType = {
@@ -24,12 +21,9 @@ export const authContextDefault: AuthContextType = {
     loadingAuthState: true,
     
     // ACTIONS
-    googleAuthenticate: () => {}, 
-    login: () => {}, 
-    logout: () => {}, 
-    signup: () => {}, 
-    sendResetPasswordLink: () => {}, 
-    resetPassword: () => {}, 
+    setUser: () => {}, 
+    setIsAuthenticated: () => {}, 
+    setLoadingAuthState: () => {}, 
 }
 
 export const AuthContext = createContext<AuthContextType>(authContextDefault); 
@@ -144,8 +138,7 @@ const AuthContextProvider: React.FC = ({ children }) => {
     return (
         <AuthContext.Provider value={{ 
             user, isAuthenticated, loadingAuthState, 
-            googleAuthenticate, login, signup, logout, 
-            sendResetPasswordLink, resetPassword
+            setUser, setIsAuthenticated, setLoadingAuthState
         }}>
             {children}
         </AuthContext.Provider>

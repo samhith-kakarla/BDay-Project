@@ -10,12 +10,7 @@ export type TwinContextType = {
     twins: Twin[]; 
     
     // ACTIONS
-    getMyTwins: (ownerID: string) => void; // Firestore
-    addNewTwin: (ownerID: string, twin: Twin) => void; // Firestore
-    updateTwinInfo: (twin: Twin) => void; // Firestore
-    deleteTwin: (twin: Twin) => void; // Firestore
-    updateTwinImages: (twin: Twin, files: any[]) => void; // Storage (Images)
-    getTwinImages: (twin: Twin) => void; // Storage (Images)
+    setTwins: (twins: Twin[]) => void; 
 }
 
 export const twinContextDefault: TwinContextType = {
@@ -23,12 +18,7 @@ export const twinContextDefault: TwinContextType = {
     twins: [], 
 
     // ACTIONS
-    getMyTwins: () => {}, 
-    addNewTwin: () => {},
-    updateTwinInfo: () => {}, 
-    deleteTwin: () => {},
-    updateTwinImages: () => {}, 
-    getTwinImages: () => {},
+    setTwins: () => {}, 
 }
 
 
@@ -164,9 +154,7 @@ const TwinContextProvider: FC = ({ children }) => {
 
     return (
         <TwinContext.Provider value={{ 
-            twins,
-            getMyTwins, addNewTwin, updateTwinInfo, deleteTwin, 
-            updateTwinImages, getTwinImages
+            twins, setTwins
         }}>
             { children }
         </TwinContext.Provider>
