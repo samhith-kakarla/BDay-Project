@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Switch, Redirect, Route } from 'react-router-dom'; 
 
@@ -28,10 +28,14 @@ import CakeOrderInfo from './pages/cakeProv/CakeOrderInfo';
 
 // CONTEXT
 import AppContextProvider from './context/appContext'; 
+import { FairyContext } from './context/providers/fairyContext'; 
+import { Fairy } from './context/types'; 
 
 function App() {
+    const [fairy, setFairy] = useState<Fairy>(); 
+
     return (
-        <AppContextProvider>
+        <FairyContext.Provider value={{ fairy: null, setFairy }}>
               <Router>
                   <div className="App">
                         <Switch>
@@ -66,7 +70,7 @@ function App() {
                         </Switch>
                   </div>
               </Router>
-        </AppContextProvider>
+        </FairyContext.Provider>
     );
 }
 

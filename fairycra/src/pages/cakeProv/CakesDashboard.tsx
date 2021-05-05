@@ -4,7 +4,6 @@ import React, { useContext, useEffect } from 'react';
 import OrdersContext from '../../context/providers/ordersContext'; 
 
 const CakesDashboard: React.FC = () => {
-    const { orders, getOrders } = useContext(OrdersContext); 
 
     useEffect(() => {
         // Get Orders Here

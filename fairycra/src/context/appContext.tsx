@@ -2,13 +2,13 @@ import React, { FC, ComponentProps } from 'react';
 
 // CONTEXT
 import AuthContextProvider from './providers/authContext'; 
-import FairyContextProvider from './providers/fairyContext'; 
+// import FairyContextProvider from './providers/fairyContext'; 
 import OrdersContextProvider from './providers/ordersContext'; 
-import TwinContextProvider from './providers/ordersContext'; 
+import TwinContextProvider from './providers/twinContext'; 
 
 const providers = [
     AuthContextProvider, 
-    FairyContextProvider, 
+    // FairyContextProvider, 
     OrdersContextProvider, 
     TwinContextProvider,
 ]; 
