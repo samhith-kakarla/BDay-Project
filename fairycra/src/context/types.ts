@@ -10,7 +10,7 @@ export interface User {
 // FAIRY
 
 export interface Fairy {
-    id: string | null | undefined; 
+    id?: string | null | undefined; 
     name: string;
     email: string;
     birthday: string;
@@ -36,14 +36,14 @@ export interface Cake {
     tag: string;
     name: string;
     price: number;
-    image: string;
+    image?: string;
 }
 
 // ORDER
 
 export interface Order {
-    id: string;
-    cakeID: number;
+    id?: string;
+    cakeID: string;
     address: string;
     complete?: boolean;
 }
