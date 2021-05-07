@@ -8,7 +8,7 @@ import { useFairyContext } from '../../context/providers/fairyContext';
 import { Fairy } from '../../context/types'; 
 
 const Home: React.FC = () => {
-    const { fairy, setFairy } = useFairyContext();  
+    const { setFairy } = useFairyContext();  
 
     const sampleFairy: Fairy = {
         name: "Samhith Kakarla", 

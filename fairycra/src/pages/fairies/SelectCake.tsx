@@ -9,8 +9,10 @@ import { Cake, Twin } from '../../context/types';
 
 const SelectCake: React.FC = () => {
     const { 
-        fairy, selectedTwin, matchedCakes, setMatchedCakes, selectedCake, setSelectedCake 
+        selectedTwin, matchedCakes, setMatchedCakes, setSelectedCake 
     } = useFairyContext(); 
+
+    // Images for each cake should be retrieved from Storage when getting matched cakes
 
     const twin: Twin = {
         id: 'px3qfBKuFNy3pwtkdHey', 

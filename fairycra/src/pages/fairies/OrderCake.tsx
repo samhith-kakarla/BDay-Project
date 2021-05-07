@@ -8,7 +8,7 @@ import { useFairyContext } from '../../context/providers/fairyContext';
 import { Order } from '../../context/types'; 
 
 const OrderCake: React.FC = () => {
-    const { selectedTwin, setOrder } = useFairyContext(); 
+    const { selectedTwin, selectedCake, setOrder } = useFairyContext(); 
 
     const newOrder: Order = {
         cakeID: "sjfkdsljf",

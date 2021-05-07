@@ -8,7 +8,7 @@ import { useFairyContext } from '../../context/providers/fairyContext';
 import { Twin } from '../../context/types'; 
 
 const SelectTwin: React.FC = () => {
-    const { fairy, matchedTwins, setMatchedTwins, selectedTwin, setSelectedTwin } = useFairyContext(); 
+    const { fairy, matchedTwins, setMatchedTwins, setSelectedTwin } = useFairyContext(); 
 
     const twin: Twin = {
         id: 'px3qfBKuFNy3pwtkdHey', 
@@ -47,7 +47,6 @@ const SelectTwin: React.FC = () => {
             match: "samhith.kakarla@gmail.com", // fairy?.email
         }).then(() => {
             console.log("Twin Selected!"); 
-            console.log(selectedTwin); 
         }).catch((error) => {
             console.log(error); 
             console.log("Twin not selected"); 
