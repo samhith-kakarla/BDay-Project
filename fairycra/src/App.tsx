@@ -7,6 +7,7 @@ import firebase from './firebase/firebaseConfig';
 import Home from './pages/main/Home'; 
 import OurMission from './pages/main/OurMission'; 
 
+import Begin from './pages/fairies/Begin'; 
 import SelectTwin from './pages/fairies/SelectTwin'; 
 import SelectCake from './pages/fairies/SelectCake'; 
 import OrderCake from './pages/fairies/OrderCake'; 
@@ -85,6 +86,7 @@ function App() {
                             <Route exact path="/about" component={OurMission} />
 
                             {/* FAIRY ROUTES */}
+                            <Route exact path="/start" component={Begin} />
                             <Route exact path="/select-twin" component={SelectTwin} />
                             <Route exact path="/select-cake" component={SelectCake} />
                             <Route exact path="/order" component={OrderCake} />

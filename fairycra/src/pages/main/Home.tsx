@@ -7,6 +7,10 @@ import { useFairyContext } from '../../context/providers/fairyContext';
 // TYPES
 import { Fairy } from '../../context/types'; 
 
+// COMPONENTS
+import FairyNav from '../../components/fairies/FairyNav'; 
+
+
 const Home: React.FC = () => {
     const { setFairy } = useFairyContext();  
 
@@ -34,6 +38,7 @@ const Home: React.FC = () => {
     
     return (
         <div>
+            <FairyNav />
             <h1>HOME</h1>
             <p>{sampleFairy.name}</p>
             <p>{sampleFairy.email}</p>

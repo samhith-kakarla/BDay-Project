@@ -7,6 +7,10 @@ import { useFairyContext } from '../../context/providers/fairyContext';
 // TYPES
 import { Cake, Twin } from '../../context/types'; 
 
+// COMPONENTS
+import FairyNav from '../../components/fairies/FairyNav'; 
+
+
 const SelectCake: React.FC = () => {
     const { 
         selectedTwin, matchedCakes, setMatchedCakes, setSelectedCake 
@@ -64,6 +68,7 @@ const SelectCake: React.FC = () => {
 
     return (
         <div>
+            <FairyNav />
             <h1>SELECT CAKE</h1>
             <button className="bg-gray-600 text-blue-500" onClick={() => selectACake(cake)}>SELECT</button>
         </div>
