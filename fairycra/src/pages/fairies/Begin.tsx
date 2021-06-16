@@ -9,7 +9,7 @@ import { Fairy } from '../../context/types';
 
 // COMPONENTS
 import FairyNav from '../../components/fairies/FairyNav'; 
-
+import FairyForm from '../../components/fairies/FairyForm';
 
 const Begin: React.FC = () => {
     const { setFairy } = useFairyContext();  
@@ -47,11 +47,21 @@ const Begin: React.FC = () => {
         setNewFairy({ ...newFairy, birthday }); 
     }
 
+    function getStarted () {
+        console.log(newFairy); 
+    }
+
     return (
         <div>
             <FairyNav />
-            <h1 className="text-6xl m-12">This is going to be some header.</h1>
-            <p className="">This is going to be some information related to the page.</p>
+            <h1 className="text-6xl my-12">This is going to be some header.</h1>
+            <p className="text-base">This is going to be some information related to the page.</p>
+            <FairyForm 
+                setName={setFairyName}
+                setEmail={setFairyEmail}
+                setBirthday={setFairyBirthday}
+                submit={getStarted}
+            />
         </div>
     )
 }
