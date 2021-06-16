@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import firebase from '../../firebase/firebaseConfig'; 
 
 // CONTEXT
@@ -13,12 +13,11 @@ import FairyNav from '../../components/fairies/FairyNav';
 
 const Begin: React.FC = () => {
     const { setFairy } = useFairyContext();  
-
-    const sampleFairy: Fairy = {
-        name: "Samhith Kakarla", 
-        email: "samhith.kakarla@gmail.com", 
-        birthday: "12-22-2003", 
-    }; 
+    const [newFairy, setNewFairy] = useState<Fairy>({
+        name: "", 
+        email: "", 
+        birthday: "", 
+    }); 
 
     function becomeAFairy (fairy: Fairy) {
         firebase.firestore().collection('fairys').add({
@@ -36,14 +35,23 @@ const Begin: React.FC = () => {
         });
     }
 
+    function setFairyName (name: string) {
+        setNewFairy({ ...newFairy, name }); 
+    }
+
+    function setFairyEmail (email: string) {
+        setNewFairy({ ...newFairy, email }); 
+    }
+
+    function setFairyBirthday (birthday: string) {
+        setNewFairy({ ...newFairy, birthday }); 
+    }
+
     return (
         <div>
             <FairyNav />
-            <h1>HOME</h1>
-            <p>{sampleFairy.name}</p>
-            <p>{sampleFairy.email}</p>
-            <p>{sampleFairy.birthday}</p>
-            <button onClick={() => becomeAFairy(sampleFairy)} className="bg-black text-yellow-400">BECOME A FAIRY</button>
+            <h1 className="text-6xl m-12">This is going to be some header.</h1>
+            <p className="">This is going to be some information related to the page.</p>
         </div>
     )
 }
