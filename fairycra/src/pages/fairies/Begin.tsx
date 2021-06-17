@@ -54,7 +54,7 @@ const Begin: React.FC = () => {
     return (
         <div>
             <FairyNav />
-            <h1 className="text-6xl my-12">This is going to be some header.</h1>
+            <h1 className="text-7xl my-12">This is going to be some header.</h1>
             <p className="text-base">This is going to be some information related to the page.</p>
             <FairyForm 
                 setName={setFairyName}
