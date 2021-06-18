@@ -16,7 +16,7 @@ const FairyForm: React.FC<Props> = ({ setName, setEmail, setBirthday, submit }) 
                 onChange={(e) => setName(e.target.value)} 
                 placeholder="NAME" 
                 className="m-2 mt-8 p-3 block w-8/12 h-10"
-            />
+            /> 
              <input 
                 onChange={(e) => setEmail(e.target.value)} 
                 placeholder="EMAIL" 

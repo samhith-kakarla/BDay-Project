@@ -1,12 +1,13 @@
 import React, { useContext, useState } from 'react';
 
 // COMPONENTS
+import MainNav from '../../components/shared/MainNav'; 
 
 const Home: React.FC = () => {
     
     return (
-        <div>
-
+        <div className="h-screen bg-gray">
+            <MainNav />
         </div>
     )
 }
