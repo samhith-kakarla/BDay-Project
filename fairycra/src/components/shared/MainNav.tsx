@@ -1,17 +1,16 @@
 import React from 'react'; 
 
 // COMPONENTS
-import { Fragment } from 'react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
+import { Disclosure } from '@headlessui/react'
+import { MenuIcon, XIcon } from '@heroicons/react/outline'
 
 const navigation = [
     { name: 'Our Mission', href: '#', current: true },
-  ]
+]
   
-  function classNames(...classes: any) {
+function classNames(...classes: any) {
     return classes.filter(Boolean).join(' ')
-  }
+}
 
 const MainNav: React.FC = () => {
 
