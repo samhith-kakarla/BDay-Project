@@ -6,7 +6,7 @@ import MainNav from '../../components/shared/MainNav';
 const Home: React.FC = () => {
     
     return (
-        <div className="h-screen bg-gray">
+        <div className="h-screen bg-lightBlue-400">
             <MainNav />
         </div>
     )
