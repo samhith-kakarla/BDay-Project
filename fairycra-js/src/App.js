@@ -13,14 +13,14 @@ function App() {
         <Switch>
           {/* MAIN ROUTES */}
           <Route exact path="/" component={Home} />
-          <Route exact path="/" component={OurMission} />
+          <Route exact path="/about" component={OurMission} />
 
           {/* FAIRY ROUTES */}
-          <Route exact path="/" component={Begin} />
-          <Route exact path="/" component={SelectTwin} />
-          <Route exact path="/" component={SelectCake} />
-          <Route exact path="/" component={OrderCake} />
-          <Route exact path="/" component={Complete} />
+          <Route exact path="/start" component={Begin} />
+          <Route exact path="/select-twin" component={SelectTwin} />
+          <Route exact path="/select-cake" component={SelectCake} />
+          <Route exact path="/order" component={OrderCake} />
+          <Route exact path="/success" component={Complete} />
         </Switch>
       </div>
     </Router>
